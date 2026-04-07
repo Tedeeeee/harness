@@ -32,10 +32,14 @@ def get_tools() -> ToolRegistry:
     from src.tools.file_read import FileReadTool
     from src.tools.file_write import FileWriteTool
     from src.tools.file_edit import FileEditTool
+    from src.tools.glob_tool import GlobTool
+    from src.tools.grep_tool import GrepTool
 
     registry = ToolRegistry()
     registry.register(BashTool())
     registry.register(FileReadTool())
     registry.register(FileWriteTool())
     registry.register(FileEditTool())
+    registry.register(GlobTool())
+    registry.register(GrepTool())
     return registry
