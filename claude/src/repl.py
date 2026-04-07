@@ -1,7 +1,10 @@
-from src.client import chat_stream, tracker
+from src.client import client, tracker
+from src.config import get_config
 from src.context import get_system_context
 from src.models import get_model, set_model_override, resolve_model_name, KNOWN_MODELS
 from src.session import new_session_id, save_session, list_sessions
+from src.tools.registry import get_tools
+from src.query_engine import run_query
 
 
 def run_repl(resume_messages: list = None):
@@ -9,8 +12,11 @@ def run_repl(resume_messages: list = None):
     session_id = new_session_id()
     messages = resume_messages if resume_messages else []
     system_prompt = get_system_context()
+    registry = get_tools()
+    config = get_config()
 
     print(f"세션: {session_id} | 모델: {get_model()}")
+    print(f"도구: {', '.join(t.name for t in registry.all())}")
     print("명령어: /exit, /model, /sessions")
 
     while True:
@@ -48,7 +54,14 @@ def run_repl(resume_messages: list = None):
                     print(f"  {s['id']} — {s['turns']}턴 ({s['created_at'][:16]})")
             continue
 
-        # 일반 대화
+        # 일반 대화 → QueryEngine으로 처리
         messages.append({"role": "user", "content": user_input})
-        assistant_message = chat_stream(messages, system=system_prompt)
-        messages.append({"role": "assistant", "content": assistant_message})
+        run_query(
+            messages=messages,
+            client=client,
+            model=get_model(),
+            max_tokens=config["max_tokens"],
+            system=system_prompt,
+            registry=registry,
+            tracker=tracker,
+        )
