@@ -31,9 +31,11 @@ def get_tools() -> ToolRegistry:
     from src.tools.bash import BashTool
     from src.tools.file_read import FileReadTool
     from src.tools.file_write import FileWriteTool
+    from src.tools.file_edit import FileEditTool
 
     registry = ToolRegistry()
     registry.register(BashTool())
     registry.register(FileReadTool())
     registry.register(FileWriteTool())
+    registry.register(FileEditTool())
     return registry
