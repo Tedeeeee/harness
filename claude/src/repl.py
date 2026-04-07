@@ -5,6 +5,7 @@ from src.models import get_model, set_model_override, resolve_model_name, KNOWN_
 from src.session import new_session_id, save_session, list_sessions
 from src.tools.registry import get_tools
 from src.query_engine import run_query
+from src.permissions.permission_manager import PermissionManager
 
 
 def run_repl(resume_messages: list = None):
@@ -14,6 +15,7 @@ def run_repl(resume_messages: list = None):
     system_prompt = get_system_context()
     registry = get_tools()
     config = get_config()
+    permission = PermissionManager()
 
     print(f"세션: {session_id} | 모델: {get_model()}")
     print(f"도구: {', '.join(t.name for t in registry.all())}")
@@ -64,4 +66,5 @@ def run_repl(resume_messages: list = None):
             system=system_prompt,
             registry=registry,
             tracker=tracker,
+            permission=permission,
         )

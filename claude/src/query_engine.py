@@ -1,6 +1,7 @@
 import anthropic
 from src.tools.registry import ToolRegistry
 from src.cost_tracker import CostTracker
+from src.permissions.permission_manager import PermissionManager, PermissionDecision
 
 MAX_ITERATIONS = 50
 
@@ -13,6 +14,7 @@ def run_query(
     system: str,
     registry: ToolRegistry,
     tracker: CostTracker,
+    permission: PermissionManager,
 ) -> str:
     """LLM ↔ Tool 반복 루프 (하네스의 심장)"""
 
@@ -45,15 +47,12 @@ def run_query(
 
         # ③ 도구 요청이 없으면 → 최종 답변, 루프 종료
         if not has_tool_use:
-            # assistant 메시지 기록에 추가
             messages.append({"role": "assistant", "content": response.content})
             return " ".join(text_parts)
 
-        # ④ 도구 요청이 있으면 → 실행하고 결과를 돌려줌
-        # assistant 메시지 (도구 요청 포함) 기록에 추가
+        # ④ 도구 요청이 있으면 → 권한 확인 후 실행
         messages.append({"role": "assistant", "content": response.content})
 
-        # 각 도구 실행
         tool_results = []
         for block in response.content:
             if block.type != "tool_use":
@@ -65,6 +64,17 @@ def run_query(
                     "type": "tool_result",
                     "tool_use_id": block.id,
                     "content": f"Unknown tool: {block.name}",
+                    "is_error": True,
+                })
+                continue
+
+            # 권한 확인 (경비원)
+            decision = permission.check(block.name, block.input)
+            if decision == PermissionDecision.DENY:
+                tool_results.append({
+                    "type": "tool_result",
+                    "tool_use_id": block.id,
+                    "content": "사용자가 거부했습니다",
                     "is_error": True,
                 })
                 continue
