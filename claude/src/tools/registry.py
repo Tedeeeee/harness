@@ -29,7 +29,11 @@ class ToolRegistry:
 def get_tools() -> ToolRegistry:
     """모든 도구를 등록하고 레지스트리를 반환한다."""
     from src.tools.bash import BashTool
+    from src.tools.file_read import FileReadTool
+    from src.tools.file_write import FileWriteTool
 
     registry = ToolRegistry()
     registry.register(BashTool())
+    registry.register(FileReadTool())
+    registry.register(FileWriteTool())
     return registry
