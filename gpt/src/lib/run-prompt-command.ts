@@ -1,12 +1,13 @@
+import type { ChatMessage } from "./chat-message.js";
 import type { AppConfig } from "./config.js";
 
 type PromptCommandDependencies = {
   loadConfig: () => AppConfig;
   streamText: (
-    prompt: string,
+    messages: ChatMessage[],
     config: AppConfig,
     onChunk: (chunk: string) => void
-  ) => Promise<void>;
+  ) => Promise<string>;
 };
 
 type PromptCommandIO = {
@@ -28,8 +29,14 @@ export async function runPromptCommand(
 
   try {
     const config = deps.loadConfig();
+    const messages: ChatMessage[] = [
+      {
+        role: "user",
+        content: prompt,
+      },
+    ];
 
-    await deps.streamText(prompt, config, (chunk) => {
+    await deps.streamText(messages, config, (chunk) => {
       io.writeStdout(chunk);
     });
 

@@ -19,18 +19,21 @@ test("REPL은 각 줄을 스트리밍 호출하고 quit 입력 시 종료한다"
     anthropicModel: "test-model",
   };
 
-  const receivedPrompts: string[] = [];
+  const receivedMessageLists: Array<
+    Array<{ role: "user" | "assistant"; content: string }>
+  > = [];
 
   const exitCode = await runReplCommand(
     createLines(["안녕하세요", "quit"]),
     {
       loadConfig: () => config,
-      streamText: async (prompt, loadedConfig, onChunk) => {
-        receivedPrompts.push(prompt);
+      streamText: async (messages, loadedConfig, onChunk) => {
+        receivedMessageLists.push(messages);
         assert.equal(loadedConfig, config);
 
         onChunk("응답 ");
         onChunk("완료");
+        return "응답 완료";
       },
     },
     {
@@ -41,7 +44,9 @@ test("REPL은 각 줄을 스트리밍 호출하고 quit 입력 시 종료한다"
   );
 
   assert.equal(exitCode, 0);
-  assert.deepEqual(receivedPrompts, ["안녕하세요"]);
+  assert.deepEqual(receivedMessageLists, [
+    [{ role: "user", content: "안녕하세요" }],
+  ]);
   assert.deepEqual(stderr, []);
   assert.deepEqual(stdout, [
     "REPL 모드입니다. 종료하려면 exit 또는 quit를 입력하세요.\n",
@@ -51,6 +56,50 @@ test("REPL은 각 줄을 스트리밍 호출하고 quit 입력 시 종료한다"
     "REPL을 종료합니다.\n",
   ]);
   assert.deepEqual(prompts, ["> ", "> "]);
+});
+
+test("REPL은 세션 안에서 이전 user/assistant 메시지를 기억해 다음 호출에 함께 전달한다", async () => {
+  const config: AppConfig = {
+    anthropicApiKey: "test-key",
+    anthropicModel: "test-model",
+  };
+
+  const receivedMessageLists: Array<
+    Array<{ role: "user" | "assistant"; content: string }>
+  > = [];
+
+  const exitCode = await runReplCommand(
+    createLines(["첫 질문", "둘째 질문", "quit"]),
+    {
+      loadConfig: () => config,
+      streamText: async (messages, _loadedConfig, onChunk) => {
+        receivedMessageLists.push(messages);
+
+        const answer =
+          messages.at(-1)?.content === "첫 질문"
+            ? "첫 답변"
+            : "둘째 답변";
+
+        onChunk(answer);
+        return answer;
+      },
+    },
+    {
+      writeStdout: () => undefined,
+      writeStderr: () => undefined,
+      writePrompt: () => undefined,
+    }
+  );
+
+  assert.equal(exitCode, 0);
+  assert.deepEqual(receivedMessageLists, [
+    [{ role: "user", content: "첫 질문" }],
+    [
+      { role: "user", content: "첫 질문" },
+      { role: "assistant", content: "첫 답변" },
+      { role: "user", content: "둘째 질문" },
+    ],
+  ]);
 });
 
 test("REPL은 빈 입력을 무시하고 다음 프롬프트를 계속 보여준다", async () => {

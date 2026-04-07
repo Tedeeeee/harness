@@ -1,12 +1,13 @@
+import type { ChatMessage } from "./chat-message.js";
 import type { AppConfig } from "./config.js";
 
 type ReplDependencies = {
   loadConfig: () => AppConfig;
   streamText: (
-    prompt: string,
+    messages: ChatMessage[],
     config: AppConfig,
     onChunk: (chunk: string) => void
-  ) => Promise<void>;
+  ) => Promise<string>;
 };
 
 type ReplIO = {
@@ -32,6 +33,9 @@ export async function runReplCommand(
     return 1;
   }
 
+  // REPL이 살아 있는 동안의 대화 문맥만 메모리에 유지한다.
+  const history: ChatMessage[] = [];
+
   io.writePrompt("> ");
 
   for await (const rawLine of lines) {
@@ -47,10 +51,31 @@ export async function runReplCommand(
       return 0;
     }
 
+    // 기존 세션 이력 위에 새 user 메시지를 덧붙여 이번 호출의 전체 문맥을 만든다.
+    const requestMessages: ChatMessage[] = [
+      ...history,
+      {
+        role: "user",
+        content: line,
+      },
+    ];
+
     try {
-      await deps.streamText(line, config, (chunk) => {
+      const assistantText = await deps.streamText(requestMessages, config, (chunk) => {
         io.writeStdout(chunk);
       });
+
+      // 호출이 성공하면 이번 user/assistant 쌍을 세션 이력에 추가한다.
+      history.push(
+        {
+          role: "user",
+          content: line,
+        },
+        {
+          role: "assistant",
+          content: assistantText,
+        }
+      );
 
       io.writeStdout("\n");
     } catch (error) {
