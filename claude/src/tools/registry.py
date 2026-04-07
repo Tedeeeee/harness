@@ -34,6 +34,7 @@ def get_tools() -> ToolRegistry:
     from src.tools.file_edit import FileEditTool
     from src.tools.glob_tool import GlobTool
     from src.tools.grep_tool import GrepTool
+    from src.tools.web_fetch import WebFetchTool
 
     registry = ToolRegistry()
     registry.register(BashTool())
@@ -42,4 +43,5 @@ def get_tools() -> ToolRegistry:
     registry.register(FileEditTool())
     registry.register(GlobTool())
     registry.register(GrepTool())
+    registry.register(WebFetchTool())
     return registry
