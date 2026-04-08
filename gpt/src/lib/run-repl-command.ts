@@ -3,6 +3,11 @@ import type { AppConfig } from "./config.js";
 
 type ReplDependencies = {
   loadConfig: () => AppConfig;
+  loadSessionMessages: (sessionId: string) => Promise<ChatMessage[]>;
+  saveSessionMessages: (
+    sessionId: string,
+    messages: ChatMessage[]
+  ) => Promise<void>;
   streamText: (
     messages: ChatMessage[],
     config: AppConfig,
@@ -16,10 +21,15 @@ type ReplIO = {
   writePrompt: (text: string) => void;
 };
 
+type ReplOptions = {
+  sessionId: string;
+};
+
 export async function runReplCommand(
   lines: AsyncIterable<string>,
   deps: ReplDependencies,
-  io: ReplIO
+  io: ReplIO,
+  options: ReplOptions
 ): Promise<number> {
   io.writeStdout("REPL 모드입니다. 종료하려면 exit 또는 quit를 입력하세요.\n");
 
@@ -33,8 +43,23 @@ export async function runReplCommand(
     return 1;
   }
 
-  // REPL이 살아 있는 동안의 대화 문맥만 메모리에 유지한다.
-  const history: ChatMessage[] = [];
+  let history: ChatMessage[];
+
+  try {
+    history = await deps.loadSessionMessages(options.sessionId);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    io.writeStderr(`${message}\n`);
+    return 1;
+  }
+
+  if (history.length > 0) {
+    io.writeStdout(
+      `세션 "${options.sessionId}"에서 ${history.length}개 메시지를 복원했습니다.\n`
+    );
+  } else {
+    io.writeStdout(`세션 "${options.sessionId}"을 시작합니다.\n`);
+  }
 
   io.writePrompt("> ");
 
@@ -51,7 +76,6 @@ export async function runReplCommand(
       return 0;
     }
 
-    // 기존 세션 이력 위에 새 user 메시지를 덧붙여 이번 호출의 전체 문맥을 만든다.
     const requestMessages: ChatMessage[] = [
       ...history,
       {
@@ -61,11 +85,14 @@ export async function runReplCommand(
     ];
 
     try {
-      const assistantText = await deps.streamText(requestMessages, config, (chunk) => {
-        io.writeStdout(chunk);
-      });
+      const assistantText = await deps.streamText(
+        requestMessages,
+        config,
+        (chunk) => {
+          io.writeStdout(chunk);
+        }
+      );
 
-      // 호출이 성공하면 이번 user/assistant 쌍을 세션 이력에 추가한다.
       history.push(
         {
           role: "user",
@@ -78,6 +105,7 @@ export async function runReplCommand(
       );
 
       io.writeStdout("\n");
+      await deps.saveSessionMessages(options.sessionId, history);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       io.writeStderr(`${message}\n`);
