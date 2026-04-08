@@ -1,6 +1,6 @@
-from src.client import client, tracker
+from src.client import provider, tracker
 from src.config import get_config
-from src.context import get_system_context
+from src.context import get_system_context, get_mode
 from src.models import get_model
 from src.session import new_session_id
 from src.tools.registry import get_tools
@@ -25,10 +25,11 @@ def run_repl(resume_messages: list = None):
         "messages": messages,
         "tracker": tracker,
         "command_registry": command_registry,
+        "system_prompt": system_prompt,
         "should_exit": False,
     }
 
-    print(f"세션: {session_id} | 모델: {get_model()}")
+    print(f"세션: {session_id} | 프로바이더: {config['provider']} | 모델: {get_model()} | 모드: {get_mode()}")
     print(f"도구: {', '.join(t.name for t in registry.all())}")
     print("/help 로 명령어 목록 확인")
 
@@ -57,10 +58,10 @@ def run_repl(resume_messages: list = None):
         messages.append({"role": "user", "content": user_input})
         run_query(
             messages=messages,
-            client=client,
+            provider=provider,
             model=get_model(),
             max_tokens=config["max_tokens"],
-            system=system_prompt,
+            system=context["system_prompt"],
             registry=registry,
             tracker=tracker,
             permission=permission,

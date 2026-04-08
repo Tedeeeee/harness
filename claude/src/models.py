@@ -1,11 +1,16 @@
 import os
 from src.config import get_config
 
-# Claude 모델 메뉴판
+# 모델 메뉴판 — 프로바이더별로 분류
 KNOWN_MODELS = {
-    "claude-sonnet-4-20250514": {"context_window": 200000, "alias": "sonnet"},
-    "claude-haiku-4-5-20251001": {"context_window": 200000, "alias": "haiku"},
-    "claude-opus-4-20250514":  {"context_window": 200000, "alias": "opus"},
+    # Anthropic
+    "claude-sonnet-4-20250514": {"provider": "anthropic", "alias": "sonnet"},
+    "claude-haiku-4-5-20251001": {"provider": "anthropic", "alias": "haiku"},
+    "claude-opus-4-20250514":  {"provider": "anthropic", "alias": "opus"},
+    # Gemini
+    "gemini-2.0-flash":        {"provider": "gemini", "alias": "flash"},
+    "gemini-2.5-flash":        {"provider": "gemini", "alias": "flash25"},
+    "gemini-2.5-pro":          {"provider": "gemini", "alias": "pro"},
 }
 
 # 대화 중 모델 변경용
@@ -28,7 +33,7 @@ def get_model() -> str:
 
 
 def resolve_model_name(name: str) -> str | None:
-    """별칭(sonnet, haiku)을 전체 모델명으로 변환한다."""
+    """별칭(sonnet, flash)을 전체 모델명으로 변환한다."""
     # 이미 전체 모델명이면 그대로
     if name in KNOWN_MODELS:
         return name
@@ -36,4 +41,16 @@ def resolve_model_name(name: str) -> str | None:
     for full_name, info in KNOWN_MODELS.items():
         if info["alias"] == name:
             return full_name
+    return None
+
+
+def get_provider_for_model(model: str) -> str | None:
+    """모델명으로 프로바이더를 알아낸다."""
+    if model in KNOWN_MODELS:
+        return KNOWN_MODELS[model]["provider"]
+    # 이름으로 추측
+    if "gemini" in model:
+        return "gemini"
+    if "claude" in model:
+        return "anthropic"
     return None

@@ -69,3 +69,22 @@ class ClearCommand(Command):
     def call(self, args, context):
         context["messages"].clear()
         return "대화 기록이 초기화되었습니다."
+
+
+class ModeCommand(Command):
+    name = "mode"
+    description = "모드를 전환합니다. 사용법: /mode brainstorm"
+
+    def call(self, args, context):
+        from src.context import get_mode, set_mode, get_available_modes, get_system_context
+
+        if not args:
+            modes = ", ".join(get_available_modes())
+            return f"현재 모드: {get_mode()}\n사용 가능: {modes}"
+
+        mode = args.strip()
+        if set_mode(mode):
+            # 모드 전환 시 시스템 프롬프트 갱신
+            context["system_prompt"] = get_system_context()
+            return f"모드 전환: {mode}"
+        return f"알 수 없는 모드: {mode}\n사용 가능: {', '.join(get_available_modes())}"

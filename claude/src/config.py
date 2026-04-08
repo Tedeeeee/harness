@@ -4,9 +4,19 @@ from pathlib import Path
 
 # 기본값 — 설정 파일이 없어도 이걸로 동작
 DEFAULTS = {
-    "api_key": "",
-    "model": "claude-sonnet-4-20250514",
-    "max_tokens": 1024,
+    "provider": "anthropic",      # 프로바이더: "anthropic", "gemini", "openai"
+    "api_key": "",                # Anthropic API 키
+    "gemini_api_key": "",         # Gemini API 키
+    "openai_api_key": "",         # OpenAI API 키
+    "model": "",                  # 모델 (비어있으면 프로바이더 기본값 사용)
+    "max_tokens": 4096,           # 최대 출력 토큰
+}
+
+# 프로바이더별 기본 모델
+PROVIDER_DEFAULT_MODELS = {
+    "anthropic": "claude-sonnet-4-20250514",
+    "gemini": "gemini-2.5-flash",
+    "openai": "gpt-4o-mini",
 }
 
 
@@ -27,7 +37,17 @@ def get_config() -> dict:
     # 3. 환경변수 (가장 높은 우선순위)
     if env_key := os.getenv("CLAUDE_API_KEY"):
         config["api_key"] = env_key
+    if env_key := os.getenv("GEMINI_API_KEY"):
+        config["gemini_api_key"] = env_key
+    if env_key := os.getenv("OPENAI_API_KEY"):
+        config["openai_api_key"] = env_key
+    if env_provider := os.getenv("CLAUDE_PROVIDER"):
+        config["provider"] = env_provider
     if env_model := os.getenv("CLAUDE_MODEL"):
         config["model"] = env_model
+
+    # 모델이 비어있으면 프로바이더 기본값
+    if not config["model"]:
+        config["model"] = PROVIDER_DEFAULT_MODELS.get(config["provider"], "")
 
     return config

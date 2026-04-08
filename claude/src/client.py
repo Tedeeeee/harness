@@ -1,41 +1,29 @@
-import anthropic
-from src.retry import with_retry
-from src.cost_tracker import CostTracker
+"""
+프로바이더 인스턴스와 비용 추적기를 생성한다.
+config에 따라 Anthropic, Gemini, OpenAI 프로바이더가 만들어진다.
+"""
+
 from src.config import get_config
-from src.models import get_model
+from src.cost_tracker import CostTracker
+from src.providers import create_provider
 
 # 설정 불러오기
 config = get_config()
 
-# Claude API 클라이언트 (전화기)
-client = anthropic.Anthropic(api_key=config["api_key"])
+# 프로바이더별 API 키 매핑
+_API_KEY_MAP = {
+    "anthropic": "api_key",
+    "gemini": "gemini_api_key",
+    "openai": "openai_api_key",
+}
+
+# 프로바이더 생성
+provider_name = config["provider"]
+key_field = _API_KEY_MAP.get(provider_name)
+if not key_field:
+    raise ValueError(f"알 수 없는 프로바이더: {provider_name}")
+
+provider = create_provider(provider_name, api_key=config.get(key_field, ""))
 
 # 토큰 비용 추적기 (택시 미터기)
 tracker = CostTracker()
-
-
-def chat_stream(messages: list, system: str = "") -> str:
-    """Claude에게 메시지를 보내고, 스트리밍으로 대답을 받는다."""
-    print("\nClaude > ", end="", flush=True)
-
-    def do_stream():
-        full_response = ""
-        with client.messages.stream(
-            model=get_model(),
-            max_tokens=config["max_tokens"],
-            system=system,
-            messages=messages
-        ) as stream:
-            for text in stream.text_stream:
-                print(text, end="", flush=True)
-                full_response += text
-
-            # 스트리밍 끝나면 usage 기록 (미터기 올리기)
-            tracker.add(stream.get_final_message().usage)
-
-        return full_response
-
-    full_response = with_retry(do_stream)
-
-    print()
-    return full_response
