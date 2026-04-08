@@ -26,6 +26,7 @@ def run_repl(resume_messages: list = None):
         "tracker": tracker,
         "command_registry": command_registry,
         "system_prompt": system_prompt,
+        "permission": permission,
         "should_exit": False,
     }
 

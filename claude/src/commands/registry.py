@@ -22,12 +22,13 @@ class CommandRegistry:
 
 def get_commands() -> CommandRegistry:
     """모든 명령어를 등록하고 레지스트리를 반환한다."""
-    from src.commands.builtin import ExitCommand, ModelCommand, SessionsCommand, HelpCommand, CostCommand, ClearCommand, ModeCommand
+    from src.commands.builtin import ExitCommand, ModelCommand, SessionsCommand, HelpCommand, CostCommand, ClearCommand, ModeCommand, PermissionCommand
 
     registry = CommandRegistry()
     registry.register(ExitCommand())
     registry.register(ModelCommand())
     registry.register(ModeCommand())
+    registry.register(PermissionCommand())
     registry.register(SessionsCommand())
     registry.register(HelpCommand())
     registry.register(CostCommand())

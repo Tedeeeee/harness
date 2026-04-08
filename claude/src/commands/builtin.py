@@ -71,6 +71,22 @@ class ClearCommand(Command):
         return "대화 기록이 초기화되었습니다."
 
 
+class PermissionCommand(Command):
+    name = "permission"
+    description = "권한 설정을 확인하거나 초기화합니다. 사용법: /permission reset"
+
+    def call(self, args, context):
+        permission = context.get("permission")
+        if not permission:
+            return "권한 관리자를 찾을 수 없습니다."
+
+        if args.strip() == "reset":
+            return permission.reset()
+
+        allowed = sorted(permission.always_allowed) if permission.always_allowed else ["없음"]
+        return f"전역 허용 도구: {', '.join(allowed)}\n초기화: /permission reset"
+
+
 class ModeCommand(Command):
     name = "mode"
     description = "모드를 전환합니다. 사용법: /mode brainstorm"

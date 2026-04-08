@@ -11,4 +11,8 @@ if args.resume:
     resume_messages = load_session(args.resume)
 
 from src.repl import run_repl
-run_repl(resume_messages=resume_messages)
+
+try:
+    run_repl(resume_messages=resume_messages)
+except KeyboardInterrupt:
+    print("\n세션을 종료합니다.")
