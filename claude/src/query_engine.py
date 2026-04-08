@@ -13,6 +13,7 @@ from src.permissions.permission_manager import PermissionManager, PermissionDeci
 from src.retry import with_retry
 
 MAX_ITERATIONS = 50
+MAX_REPEAT = 5  # 같은 도구 호출 반복 허용 횟수 (oh-my-claudecode 참고)
 
 
 def run_query(
@@ -26,6 +27,9 @@ def run_query(
     permission: PermissionManager,
 ) -> str:
     """LLM ↔ Tool 반복 루프"""
+
+    # 반복 감지용: "도구이름:입력요약" → 횟수
+    repeat_tracker = {}
 
     for turn in range(MAX_ITERATIONS):
         # ① LLM에게 메시지 + 도구 목록 보내기 (스트리밍)
@@ -86,6 +90,23 @@ def run_query(
                     "tool_use_id": block.id,
                     "tool_name": block.name,
                     "content": f"Unknown tool: {block.name}",
+                    "is_error": True,
+                })
+                continue
+
+            # 반복 감지: 같은 도구+같은 입력이 3번 이상이면 차단
+            call_key = f"{block.name}:{json.dumps(block.input, sort_keys=True)}"
+            repeat_tracker[call_key] = repeat_tracker.get(call_key, 0) + 1
+
+            if repeat_tracker[call_key] > MAX_REPEAT:
+                print(f"\n  ⚠️ 같은 호출이 {MAX_REPEAT}번 반복됨 — 중단하고 다른 방법을 시도하세요.")
+                tool_results.append({
+                    "type": "tool_result",
+                    "tool_use_id": block.id,
+                    "tool_name": block.name,
+                    "content": f"이 도구 호출이 {MAX_REPEAT}번 반복되어 차단되었습니다. "
+                               f"같은 방법을 반복하지 말고 다른 접근법을 사용하세요. "
+                               f"예: file_edit 대신 file_read로 전체를 읽고 file_write로 새로 작성하세요.",
                     "is_error": True,
                 })
                 continue

@@ -9,6 +9,22 @@ from src.query_engine import run_query
 from src.permissions.permission_manager import PermissionManager
 
 
+def _read_input() -> str:
+    """사용자 입력을 읽는다. 여러 줄 붙여넣기도 하나로 합친다."""
+    import msvcrt
+    import time
+
+    first_line = input("\n나 > ")
+    lines = [first_line]
+
+    # 붙여넣기 감지: 버퍼에 남은 입력이 있으면 계속 읽음
+    time.sleep(0.05)
+    while msvcrt.kbhit():
+        lines.append(input())
+
+    return "\n".join(lines)
+
+
 def run_repl(resume_messages: list = None):
     """대화 루프 (접수 창구)"""
     session_id = new_session_id()
@@ -35,7 +51,7 @@ def run_repl(resume_messages: list = None):
     print("/help 로 명령어 목록 확인")
 
     while True:
-        user_input = input("\n나 > ")
+        user_input = _read_input()
 
         # 슬래시 명령어 처리
         if user_input.startswith("/"):
