@@ -5,7 +5,9 @@ from src.models import get_model
 from src.session import new_session_id
 from src.tools.registry import get_tools
 from src.commands.registry import get_commands
-from src.query_engine import run_query
+from src.orchestrator.runner import run_task
+from src.hooks.registry import HookRegistry
+from src.tasks.store import TaskStore
 from src.permissions.permission_manager import PermissionManager
 
 
@@ -34,6 +36,8 @@ def run_repl(resume_messages: list = None):
     command_registry = get_commands()
     config = get_config()
     permission = PermissionManager()
+    hooks = HookRegistry()
+    task_store = TaskStore()
 
     # 공유 컨텍스트 — 명령어들이 필요한 정보를 여기서 꺼내 씀
     context = {
@@ -44,6 +48,8 @@ def run_repl(resume_messages: list = None):
         "system_prompt": system_prompt,
         "permission": permission,
         "should_exit": False,
+        "hooks": hooks,
+        "task_store": task_store,
     }
 
     print(f"세션: {session_id} | 프로바이더: {config['provider']} | 모델: {get_model()} | 모드: {get_mode()}")
@@ -71,9 +77,10 @@ def run_repl(resume_messages: list = None):
                 print(f"알 수 없는 명령어: /{cmd_name} (/help 로 확인)")
             continue
 
-        # 일반 대화 → QueryEngine으로 처리
+        # 일반 대화 → Orchestrator를 통해 Task 단위로 실행
         messages.append({"role": "user", "content": user_input})
-        run_query(
+        task = run_task(
+            goal=user_input,
             messages=messages,
             provider=provider,
             model=get_model(),
@@ -82,4 +89,6 @@ def run_repl(resume_messages: list = None):
             registry=registry,
             tracker=tracker,
             permission=permission,
+            hooks=hooks,
+            task_store=task_store,
         )

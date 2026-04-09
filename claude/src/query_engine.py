@@ -11,6 +11,7 @@ from src.tools.registry import ToolRegistry
 from src.cost_tracker import CostTracker
 from src.permissions.permission_manager import PermissionManager, PermissionDecision
 from src.retry import with_retry
+from src.hooks.registry import HookRegistry
 
 MAX_ITERATIONS = 50
 MAX_REPEAT = 5  # 같은 도구 호출 반복 허용 횟수 (oh-my-claudecode 참고)
@@ -25,6 +26,7 @@ def run_query(
     registry: ToolRegistry,
     tracker: CostTracker,
     permission: PermissionManager,
+    hooks: HookRegistry | None = None,
 ) -> str:
     """LLM ↔ Tool 반복 루프"""
 
@@ -137,6 +139,15 @@ def run_query(
                 "content": result.content,
                 "is_error": result.is_error,
             })
+
+            # after_tool hook — 도구 실행 직후 이벤트
+            if hooks:
+                hooks.emit(
+                    "after_tool",
+                    tool_name=block.name,
+                    tool_input=block.input,
+                    result=result,
+                )
 
         # ⑤ 도구 결과를 messages에 추가 → 다시 루프 맨 위로
         messages.append({"role": "user", "content": tool_results})
