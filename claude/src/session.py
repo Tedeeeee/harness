@@ -1,5 +1,6 @@
 import json
 import uuid
+import dataclasses
 from pathlib import Path
 from datetime import datetime
 
@@ -16,11 +17,17 @@ def save_session(session_id: str, messages: list):
     """대화를 파일로 저장한다 (일기 쓰기)"""
     SESSIONS_DIR.mkdir(parents=True, exist_ok=True)
     path = SESSIONS_DIR / f"{session_id}.json"
+    # TextBlock, ToolUseBlock 등 dataclass 객체를 dict로 변환
+    def _default(obj):
+        if dataclasses.is_dataclass(obj) and not isinstance(obj, type):
+            return dataclasses.asdict(obj)
+        raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
+
     path.write_text(json.dumps({
         "session_id": session_id,
         "messages": messages,
         "created_at": datetime.now().isoformat(),
-    }, ensure_ascii=False, indent=2), encoding="utf-8")
+    }, ensure_ascii=False, indent=2, default=_default), encoding="utf-8")
     print(f"세션 저장됨: {session_id}")
 
 

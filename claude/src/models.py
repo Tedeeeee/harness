@@ -7,6 +7,8 @@ KNOWN_MODELS = {
     "claude-sonnet-4-20250514": {"provider": "anthropic", "alias": "sonnet"},
     "claude-haiku-4-5-20251001": {"provider": "anthropic", "alias": "haiku"},
     "claude-opus-4-20250514":  {"provider": "anthropic", "alias": "opus"},
+    # vLLM (사내 서버 — 실제 서빙 모델: google/gemma-4-26B-A4B-it)
+    "vllm":                    {"provider": "vllm", "alias": "vllm"},
     # Gemini
     "gemini-2.0-flash":        {"provider": "gemini", "alias": "flash"},
     "gemini-2.5-flash":        {"provider": "gemini", "alias": "flash25"},
@@ -53,4 +55,8 @@ def get_provider_for_model(model: str) -> str | None:
         return "gemini"
     if "claude" in model:
         return "anthropic"
+    # 사내 vLLM 서버의 실제 모델명으로 들어온 경우
+    config = get_config()
+    if config.get("provider") == "vllm":
+        return "vllm"
     return None

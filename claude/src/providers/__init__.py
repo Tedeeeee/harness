@@ -12,5 +12,9 @@ def create_provider(provider_name: str, **kwargs) -> Provider:
     elif provider_name == "openai":
         from src.providers.openai_provider import OpenAIProvider
         return OpenAIProvider(**kwargs)
+    elif provider_name == "vllm":
+        # vLLM은 OpenAI 호환 API — base_url만 바꿔서 연결
+        from src.providers.openai_provider import OpenAIProvider
+        return OpenAIProvider(**kwargs)
     else:
         raise ValueError(f"알 수 없는 프로바이더: {provider_name}")

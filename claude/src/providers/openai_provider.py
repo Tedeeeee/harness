@@ -17,8 +17,9 @@ from src.providers.base import Provider, LLMResponse, TextBlock, ToolUseBlock, U
 class OpenAIProvider(Provider):
     """OpenAI GPT API 프로바이더"""
 
-    def __init__(self, api_key: str):
-        self.client = openai.OpenAI(api_key=api_key)
+    def __init__(self, api_key: str, base_url: str = None):
+        # base_url이 있으면 vLLM 같은 커스텀 엔드포인트에 연결
+        self.client = openai.OpenAI(api_key=api_key, base_url=base_url)
 
     def call(self, model, max_tokens, system, messages, tools, on_text=None):
         """OpenAI API 호출"""

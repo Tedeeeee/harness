@@ -4,10 +4,12 @@ from pathlib import Path
 
 # 기본값 — 설정 파일이 없어도 이걸로 동작
 DEFAULTS = {
-    "provider": "anthropic",      # 프로바이더: "anthropic", "gemini", "openai"
+    "provider": "anthropic",      # 프로바이더: "anthropic", "gemini", "openai", "vllm"
     "api_key": "",                # Anthropic API 키
     "gemini_api_key": "",         # Gemini API 키
     "openai_api_key": "",         # OpenAI API 키
+    "vllm_base_url": "",          # vLLM 엔드포인트 URL (예: http://192.168.1.111:8000/v1)
+    "vllm_api_key": "EMPTY",      # vLLM API 키 (사내 서버: Bearer EMPTY)
     "model": "",                  # 모델 (비어있으면 프로바이더 기본값 사용)
     "max_tokens": 4096,           # 최대 출력 토큰
 }
@@ -17,6 +19,7 @@ PROVIDER_DEFAULT_MODELS = {
     "anthropic": "claude-sonnet-4-20250514",
     "gemini": "gemini-2.5-flash",
     "openai": "gpt-4o-mini",
+    "vllm": "vllm",
 }
 
 
@@ -41,6 +44,10 @@ def get_config() -> dict:
         config["gemini_api_key"] = env_key
     if env_key := os.getenv("OPENAI_API_KEY"):
         config["openai_api_key"] = env_key
+    if env_url := os.getenv("VLLM_BASE_URL"):
+        config["vllm_base_url"] = env_url
+    if env_key := os.getenv("VLLM_API_KEY"):
+        config["vllm_api_key"] = env_key
     if env_provider := os.getenv("CLAUDE_PROVIDER"):
         config["provider"] = env_provider
     if env_model := os.getenv("CLAUDE_MODEL"):
