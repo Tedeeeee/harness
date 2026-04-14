@@ -1,16 +1,23 @@
-# Docs
+# Docs Guide
 
-이 폴더는 하네스의 설계와 단계 문서를 보관합니다.
+This directory is the state layer for `self-harness`.
 
-## Folders
+The harness should use these documents to recover current status instead of relying on session memory.
 
-- `steps/`: 단계별 작업 문서
-- `designs/`: 상위 설계 문서와 실험 설계
+## Document Roles
 
-## Suggested Workflow
+- `requirements/`: human-authored product input
+- `interview/`: confirmed planning decisions
+- `plans/`: master plan and step docs
+- `implementation/`: active execution state
+- `verification/`: evidence-based completion records
+- `state-model.md`: summary of the document system
+- `document-lifecycle.md`: when each document is created and updated
 
-1. 설계 문서에서 현재 실험 목표를 정한다.
-2. 단계 문서로 작업을 순서화한다.
-3. 문서를 Claude와 함께 수정하면서 계획을 다듬는다.
-4. 문서 구조가 안정되면 그 다음에 구현 자동화를 붙인다.
+## Core Rule
 
+These docs are not just notes.
+
+They are operational state.
+
+If a later skill cannot tell what to do next, the first thing to inspect is whether the correct document exists and is up to date.

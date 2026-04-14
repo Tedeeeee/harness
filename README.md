@@ -1,17 +1,57 @@
-# harness
+# self-harness
 
-문서 중심으로 단일 하네스를 설계하고 정리하는 저장소입니다.
+Canonical docs-first harness scaffold for a skill-driven workflow system.
 
-지금 이 저장소는 구현 비교용 `claude/`, `gpt/` 구조를 정리하고, 하나의 하네스를 기준으로 다시 시작하는 상태입니다. 핵심 산출물은 코드보다 `docs/` 아래 문서들입니다.
+This harness starts from the smallest stable structure:
 
-## Structure
+- human-authored requirements
+- interview decisions
+- master plan
+- step docs
+- implementation state
+- verification docs
 
-- `docs/steps`: 하네스를 단계별로 설계한 작업 문서
-- `docs/designs`: 실험 설계와 상위 방향 문서
+The purpose of this directory is to hold the single canonical harness rather than multiple versioned experiments.
 
-## Current Direction
+## Current Focus
 
-- 단일 하네스를 기준으로 구조를 단순화한다.
-- 문서 템플릿, 상위 계획, 하위 단계 문서 생성 루프를 먼저 만든다.
-- 구현 자동화보다 계획 루프와 문서 정합성을 먼저 검증한다.
+This directory defines the docs-first state model plus the minimal skill set needed to run the harness end-to-end.
 
+Planner entry points:
+
+1. `assess-product-requirements`
+2. `conduct-development-interview`
+3. `generate-master-plan`
+4. `generate-step-docs`
+
+## Minimal Skill Set
+
+### Planner
+
+- `assess-product-requirements`
+- `conduct-development-interview`
+- `generate-master-plan`
+- `generate-step-docs`
+
+### Execution
+
+- `implementation-start`
+- `implement-current-step`
+- `verify-current-step`
+- `implementation-blocker`
+
+### Routing
+
+- `route-self-harness`
+
+## Layout
+
+- `START.md`: top-level operating contract for the harness
+- `docs/requirements/`: human-authored product requirements
+- `docs/interview/`: confirmed development decisions
+- `docs/plans/`: master plan and step docs
+- `docs/implementation/`: active step execution state
+- `docs/verification/`: step verification evidence
+- `examples/`: sample inputs kept separate from live operational state
+- `templates/`: minimal reusable document shapes
+- `skills/`: repo-local skills used by router, planner, executor, verifier, and blocker handling
