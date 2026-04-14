@@ -40,6 +40,10 @@ Do not rely on conversation memory alone.
 
 No step is complete until verification evidence exists.
 
+Per-step verification must be written to `docs/verification/step-xx-verification.md`.
+
+`docs/implementation/implementation-state.md` is a state board, not a substitute for verification evidence.
+
 ### 5. Hooks automate transition, not authority
 
 Hooks may trigger the next owner automatically.

@@ -1,13 +1,29 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+[Console]::InputEncoding = [System.Text.UTF8Encoding]::new($false)
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+
 function Read-HookInput {
-    $raw = [Console]::In.ReadToEnd()
+    $stdin = [Console]::OpenStandardInput()
+    $reader = [System.IO.StreamReader]::new($stdin, [System.Text.UTF8Encoding]::new($false))
+    try {
+        $raw = $reader.ReadToEnd()
+    }
+    finally {
+        $reader.Dispose()
+    }
+
     if ([string]::IsNullOrWhiteSpace($raw)) {
         return $null
     }
 
-    return $raw | ConvertFrom-Json
+    try {
+        return $raw | ConvertFrom-Json
+    }
+    catch {
+        return $null
+    }
 }
 
 function Get-ProjectPath {
@@ -29,7 +45,7 @@ function Get-ImplementationStateText {
         return $null
     }
 
-    return Get-Content -LiteralPath $path -Raw
+    return Get-Content -LiteralPath $path -Raw -Encoding utf8
 }
 
 function Get-ImplementationSummary {
@@ -86,6 +102,49 @@ function Get-ImplementationSummary {
         Blockers = $blockers
         PendingSteps = $pendingSteps
         ActiveSteps = $activeSteps
+    }
+}
+
+function Get-MemoryPath {
+    param(
+        [Parameter(Mandatory = $true)][string]$Name
+    )
+
+    $projectRoot = Get-ProjectPath
+    return Join-Path $projectRoot ("memory\" + $Name)
+}
+
+function Get-MemoryText {
+    param(
+        [Parameter(Mandatory = $true)][string]$Name
+    )
+
+    $path = Get-MemoryPath -Name $Name
+    if (-not (Test-Path -LiteralPath $path)) {
+        return $null
+    }
+
+    return (Get-Content -LiteralPath $path -Raw -Encoding utf8).Trim()
+}
+
+function Get-MemorySummary {
+    $harnessMemory = Get-MemoryText -Name "harness-memory.md"
+    $projectMemory = Get-MemoryText -Name "project-memory.md"
+
+    $parts = @()
+    if ($harnessMemory) {
+        $parts += "Harness memory:`n$harnessMemory"
+    }
+    if ($projectMemory) {
+        $parts += "Project memory:`n$projectMemory"
+    }
+
+    return [pscustomobject]@{
+        HasHarnessMemory = [bool]$harnessMemory
+        HasProjectMemory = [bool]$projectMemory
+        HarnessMemory = $harnessMemory
+        ProjectMemory = $projectMemory
+        CombinedText = ($parts -join "`n`n")
     }
 }
 

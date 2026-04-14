@@ -38,7 +38,7 @@ Implement only the active step and stop at verification-ready.
 2. Implement only in-scope work
 3. Avoid out-of-scope or future-step work
 4. Prepare the step to be checked against acceptance
-5. Update implementation state if needed
+5. Set `Current Status` to `verification-ready` when the step is ready to be checked
 
 ## Hard Stop
 
@@ -61,11 +61,12 @@ Continue if:
 - do not implement the next step early
 - do not declare `completed`
 - do not silently expand product scope
+- do not write verification evidence into `implementation-state.md`
 
 ## Output Shape
 
 - code, config, or documentation changes for the active step
-- an updated implementation state indicating verification-ready or blocked
+- an updated implementation state indicating `in_progress`, `verification-ready`, or `blocked`
 
 ## Common Mistakes
 

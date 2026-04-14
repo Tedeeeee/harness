@@ -36,6 +36,7 @@ Exactly one step may be active at a time.
 2. Find the first pending step that is allowed to begin
 3. Create or update `docs/implementation/implementation-state.md`
 4. Mark that step as the current active step
+5. Set `Current Status` to `in_progress`
 
 ## Hard Stop
 
@@ -56,6 +57,7 @@ Continue if:
 - do not activate multiple steps
 - do not skip a blocking dependency
 - do not implement code from this skill
+- use only fixed state values (`in_progress`, `verification-ready`, `blocked`, `done`)
 
 ## Output Shape
 

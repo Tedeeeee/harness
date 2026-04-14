@@ -32,6 +32,8 @@ Do **not** use this skill before the current step has been implemented.
 
 No evidence, no pass.
 
+One step must have one verification document.
+
 ## Process
 
 1. Read the active step acceptance criteria
@@ -40,8 +42,9 @@ No evidence, no pass.
    - `pass`
    - `fail`
    - `blocked`
-4. Write a verification document under `docs/verification/`
-5. Update implementation state accordingly
+4. Write or update `docs/verification/step-xx-verification.md` for that exact step
+5. Update `docs/implementation/implementation-state.md`
+6. Record the verification document filename in the step-status table
 
 ## Hard Stop
 
@@ -56,22 +59,28 @@ Stop with `blocked` if:
 If the step passes and no blocker exists:
 
 - mark the step completed
+- set `Current Status` to `done` only when no steps remain
 - allow the next pending step to be activated
 
 If the step fails:
 
 - return control to execution for fixes
+- keep the step out of `completed`
 
 ## Hard Rules
 
 - do not declare pass without evidence
 - do not verify against invented criteria
 - do not keep coding from this skill
+- do not treat `implementation-state.md` as a replacement for a verification document
+- do not write `verified` or other status words into the `Verification Doc` column
+- do not mark a step `completed` unless its verification document exists
 
 ## Output Shape
 
-- a verification document
-- implementation state updated to `completed`, `in_progress`, or `blocked`
+- a per-step verification document under `docs/verification/`
+- implementation state updated using only fixed status values
+- the step table updated with the actual verification document filename
 - if pass and no blocker exists, execution may continue to the next step
 
 ## Common Mistakes
@@ -82,4 +91,4 @@ If the step fails:
 
 ## Success Condition
 
-The harness knows, with evidence, whether the current step is complete.
+The harness knows, with evidence and a saved verification document, whether the current step is complete.

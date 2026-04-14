@@ -5,7 +5,8 @@
 - Step:
 - Title:
 - Verification Date:
-- Result:
+- Result: pass | fail | blocked
+- Verification Doc Filename:
 
 ## Acceptance Checklist
 
@@ -34,6 +35,11 @@
 ## Decision
 
 - `pass` | `fail` | `blocked`
+
+## Skipped Checks (Optional)
+
+- User-approved skip:
+- Reason:
 
 ## Follow-up
 

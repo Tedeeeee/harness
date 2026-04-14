@@ -3,7 +3,7 @@
 ## Summary
 
 - Current Step:
-- Current Status:
+- Current Status: in_progress | verification-ready | blocked | done
 - Last Updated:
 
 ## Step Status
@@ -11,6 +11,13 @@
 | Step | Title | Status | Verification Doc | Notes |
 | --- | --- | --- | --- | --- |
 | step-01 |  | pending |  |  |
+
+Step status values:
+
+- `pending`
+- `in_progress`
+- `completed`
+- `blocked`
 
 ## Active Step Scope
 
@@ -22,9 +29,17 @@
 
 - None
 
+Rule:
+
+- use exactly `- None` when no blocker exists
+- otherwise list blocker items as bullets
+
 ## Last Verification Result
 
-- Not run yet
+- Step:
+- Result: not-run | pass | fail | blocked
+- Verification Doc:
+- Notes:
 
 ## Next Allowed Action
 
