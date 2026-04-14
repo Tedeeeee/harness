@@ -40,8 +40,18 @@ Do not rely on conversation memory alone.
 
 No step is complete until verification evidence exists.
 
+### 5. Hooks automate transition, not authority
+
+Hooks may trigger the next owner automatically.
+
+They do not invent scope, skip evidence, or bypass planner approval rules.
+
 ## Scope
 
-This harness uses a docs-first state model and a minimal skill set.
+This harness uses:
+
+- a docs-first state model
+- a minimal skill set
+- a first hook layer under `hooks/`
 
 Future upgrades should strengthen this single harness rather than creating another versioned fork.
