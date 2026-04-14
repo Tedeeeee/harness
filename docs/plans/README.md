@@ -1,14 +1,5 @@
 # Plans Directory
 
-This directory contains the execution design derived from confirmed planning decisions.
+This directory stores the master plan and step docs derived from confirmed planning decisions.
 
-## Files
-
-- `master-plan.md`: overall implementation structure
-- `steps/*.md`: per-step execution units
-
-## Rules
-
-- Plans are downstream from the interview
-- Plans must not silently add product scope
-- Step docs must support step-gated execution
+See the root `README.md` for the full explanation and rules.
