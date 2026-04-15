@@ -44,19 +44,23 @@ Route from prompt plus state, not from prompt alone.
    - current-step execution
    - verification
    - blocker handling
+   - project retrospective
 4. Hand off to exactly one skill
 
 ## Routing Rules
 
-- if no requirements document exists -> requirements authoring flow
+- if no requirements document exists -> `author-product-requirements`
 - if requirements exist but no planning has started -> `assess-product-requirements`
 - if assessment says planning is blocked -> `conduct-development-interview`
 - if interview is complete and no master plan exists -> `generate-master-plan`
 - if master plan exists and no step docs exist -> `generate-step-docs`
 - if step docs exist and no active step exists -> `implementation-start`
 - if an active step exists and work remains -> `implement-current-step`
+- if an active step failed verification and is back to in_progress -> `implement-current-step` (rework)
 - if an active step is verification-ready -> `verify-current-step`
+- if the same step has failed verification twice consecutively -> `implementation-blocker`
 - if the current state is blocked -> `implementation-blocker`
+- if all steps are completed and implementation state is done -> `project-retrospective`
 
 ## Hard Rules
 

@@ -262,6 +262,10 @@ memory는 현재 프로젝트의 일시적 상태가 아니라, 컨텍스트 압
 
 - `route-self-harness`
 
+### Requirements
+
+- `author-product-requirements`
+
 ### Planner
 
 - `assess-product-requirements`
@@ -278,6 +282,10 @@ memory는 현재 프로젝트의 일시적 상태가 아니라, 컨텍스트 압
 ### Verification
 
 - `verify-current-step`
+
+### Retrospective
+
+- `project-retrospective`
 
 ## Hook 구성
 

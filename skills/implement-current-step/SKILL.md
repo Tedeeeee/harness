@@ -27,6 +27,7 @@ Do **not** use this skill if verification is already ready or if the step is blo
 - active step under `docs/plans/steps/`
 - `docs/implementation/implementation-state.md`
 - `docs/interview/development-interview-decisions.md` when needed for confirmed decisions
+- if the active step has `depends_on` entries, read those steps' `outputs` and their verification docs to understand what was already built
 
 ## Core Rule
 
@@ -35,10 +36,15 @@ Implement only the active step and stop at verification-ready.
 ## Process
 
 1. Read the active step
-2. Implement only in-scope work
-3. Avoid out-of-scope or future-step work
-4. Prepare the step to be checked against acceptance
-5. Set `Current Status` to `verification-ready` when the step is ready to be checked
+2. If `depends_on` lists prior steps, read their outputs and verification docs to confirm prerequisites are met
+   - if a prerequisite output is missing or its verification failed, stop and route to `implementation-blocker`
+3. Check whether a verification document already exists for this step under `docs/verification/`
+   - if it exists and contains a `fail` result, read the fail reason and failed acceptance items first
+   - fix only the items that failed — do not redo passing items
+3. Implement only in-scope work
+4. Avoid out-of-scope or future-step work
+5. Prepare the step to be checked against acceptance
+6. Set `Current Status` to `verification-ready` when the step is ready to be checked
 
 ## Hard Stop
 

@@ -36,8 +36,13 @@ One step must have one verification document.
 
 ## Process
 
-1. Read the active step acceptance criteria
-2. Gather evidence for each acceptance item
+1. Read the active step acceptance criteria and their evidence types
+2. Gather evidence for each acceptance item using the specified method:
+   - `test`: run the test command and capture the output
+   - `manual`: perform the interaction and describe the observed result
+   - `command`: run the CLI command and capture the output
+   - `file-check`: confirm the file or artifact exists and note its path
+   - if no evidence type is specified, choose the most natural method and note which type was used
 3. Decide:
    - `pass`
    - `fail`
@@ -64,8 +69,16 @@ If the step passes and no blocker exists:
 
 If the step fails:
 
-- return control to execution for fixes
+- write the fail reason and failed acceptance items into the verification document
+- set `Current Status` back to `in_progress`
+- record the fail summary in the `Last Verification Result` section of implementation state
+- return control to `implement-current-step` for rework
 - keep the step out of `completed`
+
+If the same step fails verification **twice consecutively**:
+
+- classify the failure through `implementation-blocker`
+- do not let the executor retry a third time without blocker classification
 
 ## Hard Rules
 

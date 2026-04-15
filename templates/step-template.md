@@ -29,5 +29,13 @@ What this step is trying to accomplish.
 
 ## Acceptance
 
-- Acceptance 1
-- Acceptance 2
+| Criteria | Evidence Type |
+| --- | --- |
+| Acceptance 1 | test / manual / command / file-check |
+| Acceptance 2 | test / manual / command / file-check |
+
+Evidence types:
+- `test`: automated test execution log (e.g. vitest, jest)
+- `manual`: browser or UI interaction check
+- `command`: CLI command output (e.g. curl, ls, npm run)
+- `file-check`: confirm file or artifact exists
