@@ -23,7 +23,7 @@ description: 제품 요구사항과 기술 접근 방식이 이미 계획 시작
 
 ## 먼저 읽을 문서
 
-- `START.md`
+- `CLAUDE.md`
 - `docs/state-model.md`
 - `docs/document-lifecycle.md`
 - `docs/requirements/` 아래 최신 파일
@@ -82,7 +82,7 @@ description: 제품 요구사항과 기술 접근 방식이 이미 계획 시작
 ## 출력 형태
 
 - 옵션 `1`, `2`, `3`, `4`가 있는 질문 하나
-- 또는 업데이트된 interview decisions 문서와 `generate-master-plan`으로의 명확한 handoff
+- 또는 업데이트된 interview decisions 문서, `docs/plans/planning-state.md`의 interview 단계를 `complete`로 갱신, 그리고 `generate-master-plan`으로의 명확한 handoff
 
 ## 흔한 실수
 

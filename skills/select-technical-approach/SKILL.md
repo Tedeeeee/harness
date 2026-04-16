@@ -23,7 +23,7 @@ master plan을 작성하지는 않습니다.
 
 ## 먼저 읽을 문서
 
-- `START.md`
+- `CLAUDE.md`
 - `docs/state-model.md`
 - `docs/document-lifecycle.md`
 - `docs/requirements/` 아래 최신 파일
@@ -99,6 +99,7 @@ implementation plan을 쓰기 전에 implementation approach를 먼저 고릅니
 ### 완료되었을 때
 
 - `docs/architecture/technical-approach.md` 작성
+- `docs/plans/planning-state.md`의 technical-approach 단계를 `complete`로 갱신
 - planning에 필요한 technical direction이 충분히 confirmed되었다고 명시
 - 다음 스킬 이름 제시: `conduct-development-interview`
 

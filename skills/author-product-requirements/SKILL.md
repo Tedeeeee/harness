@@ -23,7 +23,7 @@ description: 요구사항 문서가 아직 없고, 사용자가 짧은 아이디
 
 ## 먼저 읽을 문서
 
-- `START.md`
+- `CLAUDE.md`
 - `templates/product-requirements-template.md`
 - 이전 프로젝트에서 재사용할 수 있는 맥락이 있다면 `memory/project-memory.md`
 

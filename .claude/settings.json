@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -ExecutionPolicy Bypass -File \"$CLAUDE_PROJECT_DIR/hooks/session-start.ps1\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/hooks/session_start.py\""
           }
         ]
       }
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -ExecutionPolicy Bypass -File \"$CLAUDE_PROJECT_DIR/hooks/user-prompt-submit.ps1\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/hooks/user_prompt_submit.py\""
           }
         ]
       }
@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -ExecutionPolicy Bypass -File \"$CLAUDE_PROJECT_DIR/hooks/stop-guard.ps1\""
+            "command": "python \"$CLAUDE_PROJECT_DIR/hooks/stop_guard.py\""
           }
         ]
       }

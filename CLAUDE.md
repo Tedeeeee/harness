@@ -8,12 +8,14 @@
 
 ## 운영 순서
 
-1. `docs/requirements/` 아래에서 가장 최신의 human-authored requirements 문서를 읽습니다
-2. 상세 planning을 시작하기 전에 기술 접근 방식을 먼저 확정합니다
-3. planning을 안전하게 시작할 수 없다면 planner skill을 통해 질문합니다
-4. decision이 confirmed된 뒤에만 planning 문서를 작성합니다
-5. implementation 동안에는 step-gated execution을 사용합니다
-6. 완료는 주장으로 닫지 말고 verification evidence로 닫습니다
+1. 이전 프로젝트가 done이라면 `project-transition`으로 docs를 초기화합니다
+2. `docs/requirements/` 아래에서 가장 최신의 human-authored requirements 문서를 읽습니다
+3. 상세 planning을 시작하기 전에 기술 접근 방식을 먼저 확정합니다
+4. planning을 안전하게 시작할 수 없다면 planner skill을 통해 질문합니다
+5. `docs/plans/planning-state.md`로 planning 진행 상황을 추적합니다
+6. decision이 confirmed된 뒤에만 planning 문서를 작성합니다
+7. implementation 동안에는 step-gated execution을 사용합니다
+8. 완료는 주장으로 닫지 말고 verification evidence로 닫습니다
 
 ## 협상 불가 규칙
 
