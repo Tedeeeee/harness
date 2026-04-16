@@ -3,17 +3,17 @@ id: step-02
 title: CRUD API 구현
 status: draft
 depends_on: [step-01]
-outputs: [API routes for reviews CRUD, filter, sort]
+outputs: [리뷰 CRUD용 API route, 필터, 정렬]
 acceptance: [모든 CRUD 엔드포인트 동작, 필터/정렬 쿼리 동작, Vitest 테스트 통과]
 ---
 
-# Step 02 — CRUD API 구현
+# 스텝 02 — CRUD API 구현
 
-## Goal
+## 목표
 
 영화 감상 기록의 생성, 조회, 수정, 삭제 API와 필터링/정렬 기능을 구현한다.
 
-## In Scope
+## 범위 안
 
 - `POST /api/reviews` — 새 감상 기록 생성
 - `GET /api/reviews` — 목록 조회 (필터/정렬 쿼리 파라미터 포함)
@@ -25,12 +25,12 @@ acceptance: [모든 CRUD 엔드포인트 동작, 필터/정렬 쿼리 동작, Vi
 - 입력 검증 (제목 필수, 별점 1~5, 날짜 형식)
 - Vitest 설치 및 API route 단위 테스트
 
-## Out of Scope
+## 범위 밖
 
 - UI 페이지
 - 페이지네이션 (목록이 충분히 작다고 가정)
 
-## Outputs
+## 산출물
 
 - `app/api/reviews/route.ts` — 목록 조회 + 생성
 - `app/api/reviews/[id]/route.ts` — 단건 조회 + 수정 + 삭제
@@ -38,7 +38,7 @@ acceptance: [모든 CRUD 엔드포인트 동작, 필터/정렬 쿼리 동작, Vi
 - `__tests__/api/reviews.test.ts` — API 테스트
 - `vitest.config.ts`
 
-## Acceptance
+## 승인 기준
 
 - 각 API 엔드포인트가 올바른 status code를 반환한다
 - 필터링 (별점 범위, 날짜 범위)이 정확히 동작한다

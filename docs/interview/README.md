@@ -1,5 +1,5 @@
-# Interview Directory
+# 인터뷰 디렉터리
 
-This directory stores confirmed planning decisions gathered during the development interview.
+이 디렉터리에는 development interview 동안 수집된 confirmed planning decision이 저장됩니다.
 
-See the root `README.md` for the full explanation and rules.
+전체 설명과 규칙은 루트 `README.md`를 참고합니다.

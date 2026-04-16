@@ -1,17 +1,17 @@
-# Project Memory
+# 프로젝트 메모리
 
-## Project Defaults
+## 프로젝트 기본값
 
 - 아직 기록된 프로젝트 기본값이 없다.
 
-## Technical Conventions
+## 기술 규칙
 
 - 아직 기록된 기술 규칙이 없다.
 
-## Repeated Decisions
+## 반복 결정
 
 - 아직 기록된 반복 결정이 없다.
 
-## Repeated Blockers
+## 반복 차단 패턴
 
 - 아직 기록된 반복 blocker가 없다.

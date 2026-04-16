@@ -1,83 +1,84 @@
 ---
 name: generate-master-plan
-description: Use when the development interview has produced enough confirmed decisions to structure a full implementation plan, but no master plan exists yet.
+description: 개발 인터뷰를 통해 충분한 confirmed decision이 쌓여 전체 구현 계획을 구조화할 수 있지만, 아직 master plan이 존재하지 않을 때 사용합니다.
 ---
 
-# Generate Master Plan
+# 마스터 플랜 생성
 
-## Overview
+## 개요
 
-This skill structures confirmed decisions into an overall implementation path.
+이 스킬은 confirmed decision을 전체 implementation path로 구조화합니다.
 
-It organizes work.
+작업을 정리합니다.
 
-It does not invent new confirmed scope.
+새로운 confirmed scope를 만들어내지는 않습니다.
 
-## When to Use
+## 사용 시점
 
-- interview exit criteria are satisfied
-- confirmed planning decisions already exist
-- `docs/plans/master-plan.md` does not exist yet, or must be created from confirmed decisions
+- interview exit criteria가 충족되었을 때
+- confirmed planning decision이 이미 존재할 때
+- `docs/plans/master-plan.md`가 아직 없거나, confirmed decision을 바탕으로 생성되어야 할 때
 
-Do **not** use this skill while planning is still blocked by unanswered questions.
+아직 planning이 unanswered question 때문에 막혀 있다면 이 스킬을 사용하지 않습니다.
 
-## Read These First
+## 먼저 읽을 문서
 
 - `START.md`
 - `docs/state-model.md`
-- latest file under `docs/requirements/`
+- `docs/requirements/` 아래 최신 파일
+- 존재한다면 `docs/architecture/technical-approach.md`
 - `docs/interview/development-interview-decisions.md`
 - `templates/master-plan-template.md`
 
-## Core Rule
+## 핵심 규칙
 
-Planning is downstream from confirmed decisions.
+planning은 confirmed decision의 downstream입니다.
 
-This skill structures decisions into a plan.
+이 스킬은 decision을 plan으로 구조화합니다.
 
-It does not replace the interview.
+인터뷰를 대체하지는 않습니다.
 
-## Process
+## 절차
 
-1. Read requirements and interview decisions
-2. Extract confirmed scope and confirmed development rules
-3. Define the overall execution direction
-4. Write milestones and completion definition
-5. Write `docs/plans/master-plan.md`
+1. requirements, technical approach, interview decisions를 읽습니다
+2. confirmed scope와 confirmed development rule을 추출합니다
+3. 전체 execution direction을 정의합니다
+4. milestone과 completion definition을 작성합니다
+5. `docs/plans/master-plan.md`를 작성합니다
 
-## Hard Stop
+## 즉시 멈추는 경우
 
-Stop if:
+다음 경우에는 멈춥니다:
 
-- key interview decisions are still unresolved
-- plan completion criteria would be guessed
-- product scope would need to be expanded silently
+- key interview decision이 아직 unresolved 상태일 때
+- plan completion criteria를 추측해야 할 때
+- 제품 범위가 조용히 확장되어야 할 때
 
-## Auto Go
+## 자동 진행 가능
 
-Continue if:
+다음 경우에는 계속 진행합니다:
 
-- confirmed decisions are enough to define milestones
-- local execution, testing, and documentation expectations are clear enough
+- confirmed decision만으로 milestone을 정의하기 충분할 때
+- 로컬 실행, 테스트, 문서화 기대치가 충분히 명확할 때
 
-## Hard Rules
+## 강한 규칙
 
-- do not promote `open` or `proposed` items to `confirmed`
-- do not silently add new product scope
-- do not weaken completion criteria
-- do not create step docs from this skill
+- `open` 또는 `proposed` 항목을 `confirmed`로 승격하지 않습니다
+- 새로운 product scope를 몰래 추가하지 않습니다
+- completion criteria를 약화하지 않습니다
+- 이 스킬에서 step doc은 만들지 않습니다
 
-## Output Shape
+## 출력 형태
 
 - `docs/plans/master-plan.md`
-- a clear handoff to `generate-step-docs`
+- `generate-step-docs`로의 명확한 handoff
 
-## Common Mistakes
+## 흔한 실수
 
-- writing the plan too early
-- mixing guessed scope into confirmed scope
-- turning the plan into a second interview
+- 계획을 너무 일찍 쓰는 것
+- guessed scope를 confirmed scope와 섞는 것
+- plan을 두 번째 인터뷰처럼 만드는 것
 
-## Success Condition
+## 성공 조건
 
-An overall implementation structure exists that reflects confirmed decisions and supports step decomposition.
+confirmed decision을 반영하고 step decomposition을 지원하는 전체 implementation structure가 존재합니다.

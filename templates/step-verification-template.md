@@ -1,6 +1,6 @@
-# Step Verification
+# 스텝 검증
 
-## Metadata
+## 메타데이터
 
 - Step:
 - Title:
@@ -8,39 +8,39 @@
 - Result: pass | fail | blocked
 - Verification Doc Filename:
 
-## Acceptance Checklist
+## 승인 기준 체크리스트
 
 | Item | Expected | Evidence | Result |
 | --- | --- | --- | --- |
 | 1 |  |  |  |
 
-## Tests
+## 테스트
 
 - Commands Run:
 - Result:
 - Notes:
 
-## Manual Verification
+## 수동 검증
 
 - Check Performed:
 - Result:
 - Notes:
 
-## Documentation Check
+## 문서 점검
 
 - Updated Files:
 - Result:
 - Notes:
 
-## Decision
+## 판정
 
 - `pass` | `fail` | `blocked`
 
-## Skipped Checks (Optional)
+## 건너뛴 점검 (선택)
 
 - User-approved skip:
 - Reason:
 
-## Follow-up
+## 후속 조치
 
 - Next allowed action:

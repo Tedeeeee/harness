@@ -1,40 +1,40 @@
 ---
 name: author-product-requirements
-description: Use when no requirements document exists and a user has provided a brief idea or one-liner that must be turned into a structured requirements draft for confirmation.
+description: 요구사항 문서가 아직 없고, 사용자가 짧은 아이디어나 한 줄 설명만 제공한 상태에서 이를 확인 가능한 구조화된 요구사항 초안으로 바꿔야 할 때 사용합니다.
 ---
 
-# Author Product Requirements
+# 제품 요구사항 초안 작성
 
-## Overview
+## 개요
 
-This skill turns a brief user idea into a structured requirements draft.
+이 스킬은 사용자의 짧은 아이디어를 구조화된 요구사항 초안으로 바꿉니다.
 
-It does not make development decisions.
+개발 결정을 내리지는 않습니다.
 
-It does not start planning.
+계획을 시작하지도 않습니다.
 
-## When to Use
+## 사용 시점
 
-- no requirements document exists under `docs/requirements/`
-- the user has expressed what they want to build in an informal or minimal form
-- a structured requirements document is needed before planning can begin
+- `docs/requirements/` 아래에 요구사항 문서가 아직 없을 때
+- 사용자가 만들고 싶은 것을 비정형적이거나 아주 간단한 형태로만 설명했을 때
+- 계획을 시작하기 전에 구조화된 요구사항 문서가 필요할 때
 
-Do **not** use this skill if a requirements document already exists.
+요구사항 문서가 이미 있다면 이 스킬을 사용하지 않습니다.
 
-## Read These First
+## 먼저 읽을 문서
 
 - `START.md`
 - `templates/product-requirements-template.md`
-- `memory/project-memory.md` for any reusable context from prior projects
+- 이전 프로젝트에서 재사용할 수 있는 맥락이 있다면 `memory/project-memory.md`
 
-## Core Rule
+## 핵심 규칙
 
-Draft the big picture. Do not decide how to build it.
+큰 그림만 초안으로 작성합니다. 어떻게 만들지는 결정하지 않습니다.
 
-## Process
+## 절차
 
-1. Read the user's idea
-2. Fill out the template structure with what can be reasonably inferred:
+1. 사용자의 아이디어를 읽습니다
+2. 합리적으로 추론할 수 있는 범위 내에서 템플릿 구조를 채웁니다:
    - Goal
    - Problem
    - Users
@@ -42,50 +42,50 @@ Draft the big picture. Do not decide how to build it.
    - Out of Scope
    - Constraints
    - Success Criteria
-3. For anything that cannot be inferred from the user's input, write `[undecided]`
-4. Present the full draft to the user in a single message
-5. Ask the user to confirm, modify, or reject the draft
-6. Save the confirmed version to `docs/requirements/{project-name}.md`
-7. Hand off to `assess-product-requirements`
+3. 사용자 입력만으로는 알 수 없는 항목은 `[undecided]`로 적습니다
+4. 전체 초안을 한 번에 사용자에게 보여줍니다
+5. 초안을 확인, 수정, 거절 중 하나로 응답해 달라고 요청합니다
+6. 확인된 버전을 `docs/requirements/{project-name}.md`로 저장합니다
+7. `assess-product-requirements`로 넘깁니다
 
-## Hard Stop
+## 즉시 멈추는 경우
 
-Stop and wait for user input if:
+다음 경우에는 멈추고 사용자 입력을 기다립니다:
 
-- the idea is too vague to fill even Goal and Core Features
-- the user rejects the draft and asks for changes
-- the draft would require guessing product scope beyond what the user stated
+- 아이디어가 너무 모호해서 Goal과 Core Features조차 채우기 어려울 때
+- 사용자가 초안을 거절하고 수정을 요구할 때
+- 초안을 만들려면 사용자가 말하지 않은 제품 범위를 추측해야 할 때
 
-## Auto Go
+## 자동 진행 가능
 
-Continue if:
+다음 경우에는 계속 진행합니다:
 
-- the user confirms the draft as-is
-- the user provides modifications and you can apply them immediately
+- 사용자가 초안을 그대로 확인했을 때
+- 사용자가 수정 사항을 줬고 바로 반영할 수 있을 때
 
-## Hard Rules
+## 강한 규칙
 
-- present the draft once, not section by section
-- do not invent features the user did not mention or imply
-- do not make technology choices — that belongs to the development interview
-- do not create interview, plan, or implementation documents from this skill
-- mark genuinely unknown sections as `[undecided]`, not with plausible guesses
-- the saved file is treated as human-authored input from the moment it is confirmed
+- 초안은 섹션별이 아니라 한 번에 보여줍니다
+- 사용자가 언급하거나 암시하지 않은 기능을 만들어 넣지 않습니다
+- 기술 선택은 하지 않습니다. 그것은 이후 단계의 일입니다
+- 이 스킬에서 인터뷰, 계획, 구현 문서를 만들지 않습니다
+- 정말 모르는 항목은 그럴듯한 추측 대신 `[undecided]`로 남깁니다
+- 저장된 파일은 확인되는 순간부터 human-authored input으로 취급합니다
 
-## Output Shape
+## 출력 형태
 
-- a full requirements draft formatted per `templates/product-requirements-template.md`
-- a clear ask: confirm, modify, or reject
-- after confirmation: the saved file path and handoff to `assess-product-requirements`
+- `templates/product-requirements-template.md` 형식에 맞춘 전체 요구사항 초안
+- `confirm`, `modify`, `reject` 중 하나를 요청하는 명확한 질문
+- 확인 이후에는 저장된 파일 경로와 `assess-product-requirements`로의 handoff
 
-## Common Mistakes
+## 흔한 실수
 
-- guessing features the user never mentioned
-- choosing tech stack or architecture in the requirements
-- asking multiple rounds of questions instead of drafting once
-- skipping user confirmation and saving directly
-- filling `[undecided]` with plausible-sounding assumptions
+- 사용자가 언급하지 않은 기능을 추측해서 넣는 것
+- 요구사항 단계에서 tech stack이나 architecture를 고르는 것
+- 한 번 초안 작성 대신 여러 차례 질문 라운드로 끌고 가는 것
+- 사용자 확인 없이 바로 저장하는 것
+- `[undecided]` 대신 그럴듯한 가정을 채워 넣는 것
 
-## Success Condition
+## 성공 조건
 
-A confirmed, human-approved requirements document exists under `docs/requirements/` and the harness can proceed to assessment.
+`docs/requirements/` 아래에 사람이 승인한 요구사항 문서가 존재하고, 하네스가 평가 단계로 넘어갈 수 있습니다.

@@ -1,35 +1,35 @@
-# Product Requirements
+# 제품 요구사항
 
-## Goal
+## 목표
 
-One or two sentences describing what should be built.
+무엇을 만들어야 하는지 한두 문장으로 설명합니다.
 
-## Problem
+## 문제
 
-What problem exists now and why it matters.
+현재 어떤 문제가 있고, 왜 중요한지 적습니다.
 
-## Users
+## 사용자
 
-- Primary user
-- Secondary user
+- 주요 사용자
+- 보조 사용자
 
-## Core Features
+## 핵심 기능
 
-- Feature 1
-- Feature 2
+- 기능 1
+- 기능 2
 
-## Out of Scope
+## 범위 밖
 
-- Exclusion 1
-- Exclusion 2
+- 제외 항목 1
+- 제외 항목 2
 
-## Constraints
+## 제약사항
 
-- Time constraint
-- Technical constraint
-- Operating constraint
+- 일정 제약
+- 기술 제약
+- 운영 제약
 
-## Success Criteria
+## 성공 기준
 
-- Observable result 1
-- Observable result 2
+- 관찰 가능한 결과 1
+- 관찰 가능한 결과 2

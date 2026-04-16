@@ -1,19 +1,19 @@
-# Development Interview Decisions
+# 개발 인터뷰 결정
 
-## Purpose
+## 목적
 
-Capture the confirmed development decisions required to write an implementation plan.
+implementation plan을 작성하는 데 필요한 confirmed development decision을 기록합니다.
 
-## Exit Criteria
+## 종료 조건
 
-- key tech choices are decided
-- test expectations are decided
-- documentation scope is decided
-- unresolved items no longer block implementation planning
+- 핵심 기술 선택이 결정되었다
+- 테스트 기대치가 결정되었다
+- 문서화 범위가 결정되었다
+- unresolved item이 더 이상 implementation planning을 막지 않는다
 
-## Decisions
+## 결정 목록
 
-### Decision 1
+### 결정 1
 
 - Topic:
 - Current Decision:

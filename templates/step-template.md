@@ -7,35 +7,35 @@ outputs: []
 acceptance: []
 ---
 
-# Step
+# 스텝
 
-## Goal
+## 목표
 
-What this step is trying to accomplish.
+이 step이 달성하려는 바를 적습니다.
 
-## In Scope
+## 범위 안
 
-- Work item 1
-- Work item 2
+- 작업 항목 1
+- 작업 항목 2
 
-## Out of Scope
+## 범위 밖
 
-- Work item not allowed here
+- 이 step에서 허용되지 않는 작업 항목
 
-## Outputs
+## 산출물
 
-- Output 1
-- Output 2
+- 산출물 1
+- 산출물 2
 
-## Acceptance
+## 승인 기준
 
 | Criteria | Evidence Type |
 | --- | --- |
 | Acceptance 1 | test / manual / command / file-check |
 | Acceptance 2 | test / manual / command / file-check |
 
-Evidence types:
-- `test`: automated test execution log (e.g. vitest, jest)
-- `manual`: browser or UI interaction check
-- `command`: CLI command output (e.g. curl, ls, npm run)
-- `file-check`: confirm file or artifact exists
+evidence type 설명:
+- `test`: 자동화 테스트 실행 로그 (예: vitest, jest)
+- `manual`: 브라우저 또는 UI 상호작용 확인
+- `command`: CLI 명령 출력 (예: curl, ls, npm run)
+- `file-check`: 파일 또는 artifact 존재 확인

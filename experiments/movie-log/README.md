@@ -1,46 +1,46 @@
 # Movie Log
 
-Personal movie review tracker. Record, browse, filter, and sort your movie watching history.
+개인 영화 감상 기록 앱입니다. 본 영화의 감상을 기록하고, 찾아보고, 필터링하고, 정렬할 수 있습니다.
 
-## Requirements
+## 요구 사항
 
 - Node.js 18+
 - npm
 
-## Setup
+## 설치
 
 ```bash
 npm install
 ```
 
-## Run
+## 실행
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3333](http://localhost:3333).
+[http://localhost:3333](http://localhost:3333)을 엽니다.
 
-## Features
+## 기능
 
-- Create movie reviews with title, rating (1-5 stars), short review, detailed review, and watched date
-- Browse all reviews in a list
-- Filter by rating range and watched date range
-- Sort by date, rating, or title (ascending/descending)
-- Edit and delete existing reviews
-- Responsive layout for mobile browsers
+- 제목, 별점(1~5), 한줄평, 상세 리뷰, 감상 날짜를 포함한 영화 감상 기록 생성
+- 전체 감상 기록 목록 조회
+- 별점 범위와 감상 날짜 범위로 필터링
+- 날짜, 별점, 제목 기준 오름차순/내림차순 정렬
+- 기존 감상 기록 수정 및 삭제
+- 모바일 브라우저 대응 반응형 레이아웃
 
-## Tech Stack
+## 기술 스택
 
 - Next.js (App Router)
 - SQLite via better-sqlite3
 - Tailwind CSS
 - TypeScript
 
-## Tests
+## 테스트
 
 ```bash
 npm test
 ```
 
-Runs API and data layer unit tests with Vitest.
+Vitest로 API와 데이터 계층 unit test를 실행합니다.

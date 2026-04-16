@@ -1,93 +1,96 @@
 ---
 name: conduct-development-interview
-description: Use when product requirements are sufficient to begin planning, but key development decisions are still missing and must be collected through one-question-at-a-time user interaction.
+description: 제품 요구사항과 기술 접근 방식이 이미 계획 시작에 충분하지만, 계획에 중요한 개발 결정이 아직 남아 있어 한 번에 하나씩 사용자와 상호작용하며 수집해야 할 때 사용합니다.
 ---
 
-# Conduct Development Interview
+# 개발 인터뷰 진행
 
-## Overview
+## 개요
 
-This skill fills the planning-critical gaps that remain after requirements assessment.
+이 스킬은 요구사항 평가와 기술 방향 고정 이후에도 남아 있는 planning-critical gap을 메웁니다.
 
-It collects confirmed decisions.
+확정된 결정을 수집합니다.
 
-It does not write the implementation plan yet.
+아직 implementation plan을 작성하지는 않습니다.
 
-## When to Use
+## 사용 시점
 
-- requirements are sufficient to begin planning
-- key development decisions are still missing
-- planner must ask questions before plan generation can safely begin
+- requirements가 계획 시작에 충분할 때
+- 여전히 key development decision이 빠져 있을 때
+- 안전하게 plan generation을 시작하기 전에 planner가 질문을 해야 할 때
 
-Do **not** use this skill after the interview exit criteria are already satisfied.
+인터뷰 종료 조건이 이미 충족된 뒤에는 이 스킬을 사용하지 않습니다.
 
-## Read These First
+## 먼저 읽을 문서
 
 - `START.md`
 - `docs/state-model.md`
 - `docs/document-lifecycle.md`
-- latest file under `docs/requirements/`
+- `docs/requirements/` 아래 최신 파일
+- 존재한다면 `docs/architecture/technical-approach.md`
 - `templates/development-interview-decisions-template.md`
 
-## Core Rule
+## 핵심 규칙
 
-Ask exactly one planning-critical question at a time.
+한 번에 정확히 하나의 planning-critical question만 묻습니다.
 
-Record only explicit user answers or approvals as `confirmed`.
+사용자가 명시적으로 답하거나 승인한 내용만 `confirmed`로 기록합니다.
 
-## Process
+## 절차
 
-1. Read the current requirements document
-2. Identify the single most important planning gap
-3. Ask exactly one question
-4. Include options `1`, `2`, `3`, and `4. user direction`
-5. Record the result in `docs/interview/development-interview-decisions.md`
-6. Repeat until planning is no longer blocked
+1. 현재 requirements 문서를 읽습니다
+2. 기술 접근 방식 문서가 있으면 읽습니다
+3. 아직 해결되지 않은 planning gap 중 가장 중요한 하나를 찾습니다
+4. 정확히 하나의 질문만 합니다
+5. 옵션 `1`, `2`, `3`, `4. user direction`을 포함합니다
+6. 결과를 `docs/interview/development-interview-decisions.md`에 기록합니다
+7. 계획이 더 이상 막히지 않을 때까지 반복합니다
 
-## Interview Exit Criteria
+## 인터뷰 종료 조건
 
-The interview may end only when:
+아래가 충족될 때만 인터뷰를 끝낼 수 있습니다:
 
-- key tech choices are decided
-- test expectations are decided
-- documentation scope is decided
-- unresolved items no longer block implementation planning
+- key tech choice가 결정되었을 때
+- test expectation이 결정되었을 때
+- documentation scope가 결정되었을 때
+- 남은 unresolved item이 implementation planning을 막지 않을 때
 
-## Hard Stop
+## 즉시 멈추는 경우
 
-Stop and ask the user if:
+다음 경우에는 멈추고 사용자에게 묻습니다:
 
-- product scope would change
-- a decision would be marked `confirmed` without explicit approval
-- a planning-critical gap still prevents safe plan generation
+- product scope가 바뀌어야 할 때
+- 명시적 승인 없이 어떤 결정을 `confirmed`로 표시하려 할 때
+- planning-critical gap이 여전히 안전한 plan generation을 막을 때
 
-## Auto Go
+## 자동 진행 가능
 
-Continue the interview if:
+다음 경우에는 인터뷰를 계속합니다:
 
-- the next missing item can be resolved with one question
-- the current decision falls within planning detail rather than product scope
+- 다음 누락 항목을 질문 하나로 해결할 수 있을 때
+- 현재 결정이 product scope가 아니라 planning detail에 해당할 때
 
-## Hard Rules
+## 강한 규칙
 
-- ask one question only
-- do not batch questions
-- do not mark guesses as `confirmed`
-- do not create plan documents from this skill
-- if AI first raises a missing item and the user approves it, record that as `ai-raised-approved-by-user`
+- 질문은 한 번에 하나만 합니다
+- 질문을 묶지 않습니다
+- 추측을 `confirmed`로 표시하지 않습니다
+- `docs/architecture/technical-approach.md`에 이미 확정된 기술 결정을 scope change 없이 다시 열지 않습니다
+- 이 스킬에서 plan 문서를 만들지 않습니다
+- AI가 먼저 빠진 항목을 제기했고 사용자가 승인했다면 `ai-raised-approved-by-user`로 기록합니다
 
-## Output Shape
+## 출력 형태
 
-- one question with options `1`, `2`, `3`, and `4`
-- or an updated interview decisions document plus a clear handoff to `generate-master-plan`
+- 옵션 `1`, `2`, `3`, `4`가 있는 질문 하나
+- 또는 업데이트된 interview decisions 문서와 `generate-master-plan`으로의 명확한 handoff
 
-## Common Mistakes
+## 흔한 실수
 
-- turning the interview into a plan
-- asking multiple questions in one message
-- recording inferred answers as confirmed
-- treating implementation detail as product scope by default
+- 인터뷰를 plan으로 바꿔버리는 것
+- 한 메시지에 여러 질문을 넣는 것
+- 추론한 답을 confirmed로 기록하는 것
+- 구현 세부 사항을 무조건 product scope로 취급하는 것
 
-## Success Condition
+## 성공 조건
 
-Planning can begin without relying on unapproved assumptions.
+승인되지 않은 가정에 의존하지 않고 planning을 시작할 수 있습니다.

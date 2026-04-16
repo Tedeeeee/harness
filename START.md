@@ -1,61 +1,62 @@
-# Self Harness Start
+# 셀프 하네스 시작점
 
-You are operating a docs-first harness.
+당신은 docs-first 하네스를 운영하고 있습니다.
 
-Your first job is not to invent features or jump straight into implementation.
+당신의 첫 번째 일은 기능을 지어내거나 곧바로 구현으로 뛰어드는 것이 아닙니다.
 
-Your first job is to respect and maintain the state model that lets planning and execution happen safely across sessions.
+당신의 첫 번째 일은 세션이 바뀌어도 planning과 execution이 안전하게 이어질 수 있도록 state model을 존중하고 유지하는 것입니다.
 
-## Operating Order
+## 운영 순서
 
-1. Read the newest human-authored requirements document under `docs/requirements/`
-2. If planning cannot start safely, ask questions through planner skills
-3. Only after decisions are confirmed, write planning documents
-4. During implementation, use step-gated execution
-5. Close work through verification evidence, not by assertion
+1. `docs/requirements/` 아래에서 가장 최신의 human-authored requirements 문서를 읽습니다
+2. 상세 planning을 시작하기 전에 기술 접근 방식을 먼저 확정합니다
+3. planning을 안전하게 시작할 수 없다면 planner skill을 통해 질문합니다
+4. decision이 confirmed된 뒤에만 planning 문서를 작성합니다
+5. implementation 동안에는 step-gated execution을 사용합니다
+6. 완료는 주장으로 닫지 말고 verification evidence로 닫습니다
 
-## Non-Negotiable Rules
+## 협상 불가 규칙
 
-### 1. Requirements are human input
+### 1. 요구사항은 human input이다
 
-Files under `docs/requirements/` are human-authored input.
+`docs/requirements/` 아래 파일은 human-authored input입니다.
 
-- Do not overwrite them
-- Do not enrich them in place
-- Do not treat inferred scope as if the human wrote it
+- 덮어쓰지 않습니다
+- 제자리에서 풍부화하지 않습니다
+- 추론한 scope를 사람이 쓴 것처럼 취급하지 않습니다
 
-### 2. The state model is the source of truth
+### 2. state model이 source of truth다
 
-Use the docs in this directory to recover the current state.
+현재 상태를 복원할 때는 이 디렉터리의 docs를 사용합니다.
 
-Do not rely on conversation memory alone.
+conversation memory만 믿지 않습니다.
 
-### 3. Planning and execution are separate roles
+### 3. planning과 execution은 분리된 역할이다
 
-- Planner asks, confirms, and structures decisions
-- Executor implements only the active step
-- Verifier closes completion only with evidence
+- Planner는 질문하고, 확인하고, 결정을 구조화합니다
+- Executor는 active step만 구현합니다
+- Verifier는 evidence로만 completion을 닫습니다
 
-### 4. Completion requires evidence
+### 4. 완료에는 증거가 필요하다
 
-No step is complete until verification evidence exists.
+verification evidence가 없으면 어떤 step도 완료가 아닙니다.
 
-Per-step verification must be written to `docs/verification/step-xx-verification.md`.
+step별 verification은 `docs/verification/step-xx-verification.md`에 남겨야 합니다.
 
-`docs/implementation/implementation-state.md` is a state board, not a substitute for verification evidence.
+`docs/implementation/implementation-state.md`는 상태판이지 verification evidence의 대체물이 아닙니다.
 
-### 5. Hooks automate transition, not authority
+### 5. hook은 전이를 자동화할 뿐 권한을 가지지 않는다
 
-Hooks may trigger the next owner automatically.
+hook은 다음 owner를 자동으로 트리거할 수 있습니다.
 
-They do not invent scope, skip evidence, or bypass planner approval rules.
+scope를 발명하거나, evidence를 건너뛰거나, planner 승인 규칙을 우회하지는 않습니다.
 
-## Scope
+## 범위
 
-This harness uses:
+이 하네스는 다음을 사용합니다:
 
-- a docs-first state model
-- a minimal skill set
-- a first hook layer under `hooks/`
+- docs-first state model
+- 최소 skill 세트
+- `hooks/` 아래의 첫 번째 hook 계층
 
-Future upgrades should strengthen this single harness rather than creating another versioned fork.
+앞으로의 업그레이드는 버전이 다른 새 하네스를 만드는 대신, 이 단일 하네스를 더 강하게 만드는 방향이어야 합니다.

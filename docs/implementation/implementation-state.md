@@ -17,7 +17,7 @@
 
 ## Active Step Scope
 
-- In Scope: N/A (all steps completed)
+- In Scope: N/A (모든 step 완료)
 - Out of Scope: N/A
 - Acceptance Focus: N/A
 
@@ -34,4 +34,4 @@
 
 ## Next Allowed Action
 
-- Project complete. No further steps.
+- 프로젝트 완료. 추가 step 없음.

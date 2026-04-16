@@ -1,43 +1,43 @@
-# Master Plan
+# 마스터 플랜
 
-## Goal
+## 목표
 
-Describe the intended end state.
+도달해야 하는 최종 상태를 설명합니다.
 
-## Direction
+## 방향
 
-Describe the implementation shape derived from the confirmed decisions.
+confirmed decision에서 파생된 구현 방향을 설명합니다.
 
-## Included Scope
+## 포함 범위
 
-- Included item 1
-- Included item 2
+- 포함 항목 1
+- 포함 항목 2
 
-## Non-Goals
+## 비목표
 
-- Excluded item 1
-- Excluded item 2
+- 제외 항목 1
+- 제외 항목 2
 
-## Development Rules
+## 개발 규칙
 
-- Tech choice summary
-- Test completion rule
-- Documentation completion rule
+- 기술 선택 요약
+- 테스트 완료 규칙
+- 문서화 완료 규칙
 
-## Milestones
+## 마일스톤
 
-1. Milestone 1
-2. Milestone 2
-3. Milestone 3
+1. 마일스톤 1
+2. 마일스톤 2
+3. 마일스톤 3
 
-## Risks
+## 위험
 
-- Risk 1
-- Risk 2
+- 위험 1
+- 위험 2
 
-## Completion Definition
+## 완료 정의
 
-- runs locally end-to-end
-- confirmed scope is implemented
-- tests satisfy the agreed rule
-- documentation satisfies the agreed rule
+- 로컬에서 end-to-end로 실행된다
+- confirmed scope가 구현되어 있다
+- 테스트가 합의된 규칙을 만족한다
+- 문서화가 합의된 규칙을 만족한다

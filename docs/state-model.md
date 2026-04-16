@@ -1,5 +1,5 @@
-# State Model
+# 상태 모델
 
-See the root `README.md` for the canonical explanation of the state model.
+상태 모델의 정식 설명은 루트 `README.md`를 참고합니다.
 
-This file exists as a stable reference target for skills that need to load the state-model entry point.
+이 파일은 state-model 진입점을 읽어야 하는 skill을 위한 안정적인 참조 대상으로 존재합니다.

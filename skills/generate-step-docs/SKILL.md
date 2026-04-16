@@ -1,98 +1,98 @@
 ---
 name: generate-step-docs
-description: Use when a master plan exists and must be decomposed into step-gated execution units with clear scope, outputs, and acceptance criteria.
+description: master plan이 이미 존재하고, 이를 명확한 범위, 산출물, acceptance criteria를 가진 step-gated execution unit으로 분해해야 할 때 사용합니다.
 ---
 
-# Generate Step Docs
+# 스텝 문서 생성
 
-## Overview
+## 개요
 
-This skill decomposes the master plan into executable step units.
+이 스킬은 master plan을 실행 가능한 step 단위로 분해합니다.
 
-Each step must be clear enough for executor and verifier to use without guessing.
+각 step은 executor와 verifier가 추측 없이 사용할 수 있을 만큼 명확해야 합니다.
 
-## When to Use
+## 사용 시점
 
-- `docs/plans/master-plan.md` exists
-- execution needs step-gated boundaries
-- `docs/plans/steps/*.md` must be created or rewritten from the current master plan
+- `docs/plans/master-plan.md`가 존재할 때
+- 실행을 step-gated boundary로 나눠야 할 때
+- 현재 master plan 기준으로 `docs/plans/steps/*.md`를 새로 만들거나 다시 써야 할 때
 
-Do **not** use this skill before the master plan is stable.
+master plan이 아직 안정적이지 않다면 이 스킬을 사용하지 않습니다.
 
-## Read These First
+## 먼저 읽을 문서
 
 - `START.md`
 - `docs/plans/master-plan.md`
 - `docs/interview/development-interview-decisions.md`
 - `templates/step-template.md`
 
-## Core Rule
+## 핵심 규칙
 
-Each step must define exactly what belongs here, what does not belong here, and how completion will be checked.
+각 step은 정확히 무엇이 이 step의 일인지, 무엇이 아닌지, 완료를 어떻게 확인할지를 정의해야 합니다.
 
-## Step Sizing Guide
+## Step 크기 가이드
 
-A well-sized step:
+적절한 크기의 step은 다음 조건을 만족합니다:
 
-- can be implemented and verified within a single session
-- touches one logical layer or concern (e.g. DB schema, API, UI, styling)
-- has 2–5 acceptance criteria — fewer means the step is too vague, more means it should be split
-- produces outputs that can be tested independently from later steps
+- 한 세션 안에서 구현과 검증이 가능하다
+- 하나의 논리적 계층 또는 관심사만 다룬다 (예: DB schema, API, UI, styling)
+- acceptance criteria가 2~5개다. 그보다 적으면 step이 너무 모호하고, 그보다 많으면 나눠야 한다
+- 이후 step과 독립적으로 테스트할 수 있는 output을 만든다
 
-Target range: **3–7 steps** for a typical small-to-medium project.
+일반적인 소규모~중규모 프로젝트 기준 목표 범위는 **3~7 steps**입니다.
 
-If the plan produces more than 10 steps, look for steps that can be merged without losing verification clarity. If it produces fewer than 2 steps, look for natural split points within each step.
+10개가 넘는 step이 나오면 verification clarity를 잃지 않는 범위에서 합칠 수 있는 곳을 찾습니다. 2개보다 적게 나오면 각 step 안에서 자연스러운 분리 지점을 찾습니다.
 
-## Process
+## 절차
 
-1. Read the master plan
-2. Identify natural execution boundaries using the sizing guide above
-3. Create one step document per boundary
-4. For each step, define:
+1. master plan을 읽습니다
+2. 위의 sizing guide를 사용해 자연스러운 execution boundary를 찾습니다
+3. 각 boundary마다 step 문서 하나를 만듭니다
+4. 각 step마다 아래를 정의합니다:
    - in-scope work
    - out-of-scope work
-   - outputs: concrete artifacts this step produces (files, tables, endpoints, components)
-   - acceptance: observable checks that prove the outputs work, each paired with an evidence type (`test`, `manual`, `command`, or `file-check`)
-   - `depends_on`: list prior step IDs whose outputs this step requires as input
-     - only list direct dependencies, not the full chain
-     - if a step has no dependencies, use `[]`
-5. Write the step documents under `docs/plans/steps/`
+   - outputs: 이 step이 만드는 구체적 artifact (files, tables, endpoints, components)
+   - acceptance: output이 실제로 동작함을 보여주는 관찰 가능한 체크. 각 항목에는 evidence type (`test`, `manual`, `command`, `file-check`)을 짝지어 둡니다
+   - `depends_on`: 이 step이 입력으로 필요로 하는 prior step ID 목록
+     - 전체 체인이 아니라 direct dependency만 적습니다
+     - dependency가 없으면 `[]`를 사용합니다
+5. step 문서를 `docs/plans/steps/` 아래에 씁니다
 
-## Hard Stop
+## 즉시 멈추는 경우
 
-Stop if:
+다음 경우에는 멈춥니다:
 
-- the master plan is not stable enough to decompose
-- step acceptance would have to be invented without basis
-- step boundaries are too ambiguous to support gated execution
+- master plan이 아직 분해하기에 충분히 안정적이지 않을 때
+- 근거 없이 step acceptance를 지어내야 할 때
+- step boundary가 너무 모호해서 gated execution을 지원할 수 없을 때
 
-## Auto Go
+## 자동 진행 가능
 
-Continue if:
+다음 경우에는 계속 진행합니다:
 
-- the master plan clearly implies step boundaries
-- acceptance can be tied back to confirmed plan scope
+- master plan이 step boundary를 분명하게 암시할 때
+- acceptance를 confirmed plan scope와 연결할 수 있을 때
 
-## Hard Rules
+## 강한 규칙
 
-- do not create overlapping steps casually
-- do not put next-step work into the current step
-- do not write acceptance with no execution basis
-- every step's `outputs` must be specific enough for the next step's executor to locate them
-- `depends_on` must reflect real input needs, not just ordering preference
+- step이 쉽게 겹치도록 만들지 않습니다
+- 다음 step의 작업을 현재 step에 넣지 않습니다
+- 실행 근거 없는 acceptance를 쓰지 않습니다
+- 모든 step의 `outputs`는 다음 step executor가 위치를 찾을 수 있을 만큼 구체적이어야 합니다
+- `depends_on`은 단순 순서 선호가 아니라 실제 입력 필요를 반영해야 합니다
 
-## Output Shape
+## 출력 형태
 
-- one or more files under `docs/plans/steps/`
-- a clear note that execution may begin with `implementation-start`
+- `docs/plans/steps/` 아래의 하나 이상의 파일
+- `implementation-start`로 execution을 시작할 수 있다는 명확한 안내
 
-## Common Mistakes
+## 흔한 실수
 
-- steps that are too large to implement and verify in one session
-- steps that are too small and create unnecessary overhead
-- steps that hide out-of-scope boundaries
-- acceptance criteria that are too vague to verify
+- 한 세션에 구현과 검증이 어려울 정도로 step이 큰 것
+- 너무 잘게 쪼개서 불필요한 오버헤드를 만드는 것
+- out-of-scope boundary를 숨기는 것
+- 검증할 수 없을 정도로 acceptance criteria가 모호한 것
 
-## Success Condition
+## 성공 조건
 
-The project can now be executed step-by-step without free-running across the whole plan.
+이제 프로젝트를 전체 plan 위에서 자유주행하지 않고, step-by-step으로 실행할 수 있습니다.
