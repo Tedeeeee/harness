@@ -1,107 +1,111 @@
 ---
 name: route-self-harness
-description: 사용자 요청이 들어왔고, prompt와 문서 상태를 함께 보고 planning, execution, verification, blocker 처리 중 어떤 스킬이 다음 action을 맡아야 하는지 하네스가 결정해야 할 때 사용합니다.
+description: Use when the harness must decide the next owner or skill by interpreting the current prompt together with live document state across requirements, visual analysis, planning, implementation, verification, and project closure.
 ---
 
-# 셀프 하네스 라우팅
+# Route Self Harness
 
-## 개요
+## Overview
 
-이 스킬은 최상위 traffic controller입니다.
+This skill is the harness traffic controller.
 
-직접 작업을 수행하지 않습니다.
+It does not do the work itself. It decides which skill must run next.
 
-다음 스킬을 고릅니다.
-
-## 사용 시점
-
-- 새로운 요청이 들어왔을 때
-- 현재 문서 상태를 맥락으로 삼아 요청을 해석해야 할 때
-- 여러 단계가 가능하고 다음 owner를 골라야 할 때
-
-## 먼저 읽을 문서
+## Read These First
 
 - `CLAUDE.md`
+- `README.md`
 - `docs/state-model.md`
 - `docs/document-lifecycle.md`
-- `docs/plans/planning-state.md` (있다면)
-- `docs/implementation/implementation-state.md` (있다면)
-- `docs/` 아래 현재 문서들
+- `docs/plans/planning-state.md` if it exists
+- `docs/implementation/implementation-state.md` if it exists
+- `memory/harness-memory.md` (feedback 카테고리는 라우팅 판정에 직접 영향)
+- `memory/project-memory.md` if it exists
 
-## 핵심 규칙
+Memory를 읽은 직후 `append_trace(event_type="memory-read", actor="route-self-harness", reason=...)`로 한 줄 기록합니다. reason은 어떤 memory 항목이 현재 판정에 영향을 주었는지 요약 (또는 "no applicable memory").
 
-prompt만이 아니라 `prompt + state`로 라우팅합니다.
+## Core Rule
 
-## 절차
+Always route using `prompt + state`, never prompt alone.
 
-1. 현재 docs state를 확인합니다
-2. 사용자 요청을 확인합니다
-3. 다음 단계가 무엇인지 결정합니다:
-   - requirements authoring
-   - requirements assessment
-   - technical approach selection
-   - development interview
-   - master planning
-   - step decomposition
-   - implementation start
-   - current-step execution
-   - verification
-   - blocker handling
-   - project retrospective
-4. 정확히 하나의 스킬로 handoff합니다
+## Decision Order
 
-## 라우팅 규칙
+1. Check whether the previous project is already complete and a transition is required
+2. Check whether the current request is driven by a visual source of truth
+3. Check whether requirements authoring is still missing
+4. Check planning state
+5. Check implementation state
+6. Check verification and blocker state
+7. Choose exactly one next skill
 
-### 전환
+## Routing Rules
 
-- implementation state가 done이고 새 requirements 파일이 있다면 -> `project-transition`
-- implementation state가 done이고 retrospective가 아직 안 됐다면 -> `project-retrospective`
+### Project closure
 
-### planning (planning-state.md 기반)
+- If implementation is done and a retrospective is still missing -> `project-retrospective`
+- If implementation is done and the user is starting new work -> `project-transition`
 
-- requirements 문서가 없으면 -> `author-product-requirements`
-- requirements는 있지만 planning-state의 requirements가 not-assessed라면 -> `assess-product-requirements`
-- requirements는 충분하지만 planning-state의 technical-approach가 not-started라면 -> `select-technical-approach`
-- technical-approach가 complete이지만 interview가 not-started라면 -> `conduct-development-interview`
-- planning-state에 blocked 단계가 있다면 -> `conduct-development-interview`
-- interview가 complete이고 master-plan이 not-started라면 -> `generate-master-plan`
-- master-plan이 complete이고 step-docs가 not-started라면 -> `generate-step-docs`
+### Visual source mode
 
-### planning (planning-state.md 없이 fallback)
+- If the request is mainly driven by a PDF, mockup, screenshot set, wireframe, or prototype and `docs/visual-analysis/visual-source-analysis.md` does not exist -> `analyze-visual-source`
+- If visual analysis exists but a requirements document does not yet exist -> `author-product-requirements`
 
-- requirements는 있지만 planning이 아직 시작되지 않았다면 -> `assess-product-requirements`
-- requirements는 충분하지만 technical approach 문서가 없다면 -> `select-technical-approach`
-- technical approach는 있지만 interview decisions 문서가 없다면 -> `conduct-development-interview`
-- interview가 끝났고 master plan이 없다면 -> `generate-master-plan`
-- master plan은 있지만 step doc이 없다면 -> `generate-step-docs`
+### Planning with `planning-state.md`
 
-### 실행
+- If `source-analysis` is `not-started` and the request is visual-source driven -> `analyze-visual-source`
+- If `source-analysis` is `blocked` -> `author-product-requirements` only after the blocking question is resolved
+- If requirements are missing -> `author-product-requirements`
+- If requirements are present and `requirements` is `not-assessed` -> `assess-product-requirements`
+- If technical approach is `not-started` -> `select-technical-approach`
+- If interview is `not-started` or `blocked` -> `conduct-development-interview`
+- If master plan is `not-started` -> `generate-master-plan`
+- If step docs are `not-started` -> `generate-step-docs`
 
-- step doc은 있지만 active step이 없다면 -> `implementation-start`
-- active step이 있고 할 일이 남아 있다면 -> `implement-current-step`
-- active step이 verification에 실패했고 다시 `in_progress`로 돌아왔다면 -> `implement-current-step` (rework)
+### Planning fallback without `planning-state.md`
 
-### 검증
+- If the request is visual-source driven and there is no visual analysis document -> `analyze-visual-source`
+- If requirements are missing -> `author-product-requirements`
+- If requirements exist but have not been assessed -> `assess-product-requirements`
+- If technical approach is missing -> `select-technical-approach`
+- If interview decisions are missing -> `conduct-development-interview`
+- If master plan is missing -> `generate-master-plan`
+- If step docs are missing -> `generate-step-docs`
 
-- active step이 verification-ready라면 -> `verify-current-step`
-- 같은 step이 verification에 두 번 연속 실패했다면 -> `implementation-blocker`
-- 현재 state가 blocked라면 -> `implementation-blocker`
+### Implementation
 
-### 완료
+- If step docs exist but no active step exists -> `implementation-start`
+- If current step is `in_progress` -> `implement-current-step`
+- If current step is `verification-ready` -> `verify-current-step`
+- If current state is `blocked` -> `implementation-blocker`
+- If current state is `interrupted_by_user` -> `implement-current-step` (with interrupt handling branch)
 
-- 모든 step이 completed이고 implementation state가 done이라면 -> `project-retrospective`
+### Completion
 
-## 강한 규칙
+- If all steps are done -> `project-retrospective`
 
-- 단계를 가볍게 건너뛰지 않습니다
-- planning이 불완전한데 바로 implementation으로 라우팅하지 않습니다
-- 모든 “continue” 요청을 똑같이 다루지 않습니다. current state를 이용해 해석합니다
+## Strong Rules
 
-## 출력 형태
+- Do not jump from raw visual input directly into requirements or implementation
+- Do not skip planning stages aggressively
+- Do not treat every "continue" prompt literally; interpret it through state
+- If the task is visual-source driven, screen analysis must exist before requirements authoring begins
 
-- 선택된 다음 스킬
-- current state에 근거한 짧은 이유
+## Output
 
-## 성공 조건
+- The name of the next skill
+- A short reason grounded in current state
 
-하네스가 언제나 가장 자연스러운 단일 다음 action을 알 수 있습니다.
+## Trace
+
+After choosing the next skill, append one trace entry to the current day's trace file per `templates/trace-entry-template.md`:
+
+- event_type: `skill-selected`
+- actor: `route-self-harness`
+- reason: short state-grounded reason (e.g., "requirements not-assessed")
+- detail: chosen skill name
+
+This entry is for debugging only and does not substitute verification evidence.
+
+## Success Condition
+
+The harness chooses the correct next owner without skipping the visual analysis, planning, implementation, or verification contracts.

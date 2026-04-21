@@ -1,0 +1,18 @@
+
+> moyza-discovery@0.1.0 test
+> vitest run
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90mC:/workspace/harness/experiments/moyza-discovery[39m
+
+ [32m✓[39m src/data/__tests__/accessors.test.ts [2m([22m[2m19 tests[22m[2m)[22m[90m 21[2mms[22m[39m
+ [32m✓[39m tests/unit/search.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[90m 108[2mms[22m[39m
+ [32m✓[39m tests/unit/detail.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[90m 102[2mms[22m[39m
+ [32m✓[39m tests/unit/home.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[90m 128[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m43 passed[39m[22m[90m (43)[39m
+[2m   Start at [22m 12:08:53
+[2m   Duration [22m 1.79s[2m (transform 296ms, setup 604ms, collect 792ms, tests 358ms, environment 3.51s, prepare 607ms)[22m
+

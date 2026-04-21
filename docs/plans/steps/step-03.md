@@ -1,45 +1,62 @@
 ---
 id: step-03
-title: UI 구현
-status: draft
-depends_on: [step-02]
-outputs: [목록 페이지, 작성/수정 폼, 삭제 확인, 필터/정렬 UI]
-acceptance: [브라우저에서 CRUD 전체 흐름 동작, 필터/정렬 UI 동작]
+title: home-screen
+status: completed
+screen_ids: [home]
+visual_scope: approximate
+depends_on: [step-01, step-02]
+outputs:
+  - `app/page.tsx` (Home 라우트)
+  - `app/(components)/Logo.tsx` — placeholder 텍스트/SVG
+  - `app/(components)/SurveyBanner.tsx` — `NEXT_PUBLIC_SURVEY_URL` 참조, 부재 시 placeholder 값
+  - `app/(components)/SearchBar.tsx` — 키워드 입력, Enter/검색 아이콘 시 `/search?q=`로 네비게이션
+  - `app/(components)/PosterSection.tsx` — 섹션 헤더 + 가로 스크롤 포스터 카드
+  - `app/(components)/PosterCard.tsx` — 포스터 + 타이틀 + `{EP} · Genre` + 별점
+  - `app/(components)/BottomTabBar.tsx` — Home / Event(탐색) / Board(설문) 3개 탭, Account 없음
+  - `.env.example`: `NEXT_PUBLIC_SURVEY_URL=https://example.invalid/survey`
+acceptance:
+  - Home 페이지가 `업데이트된 신작 → 인기작 픽 → 코리아 픽` 순으로 3개 섹션을 렌더
+  - 최상단에 설문 베너가 고정 위치에 렌더되고 탭 시 설문 URL로 아웃바운드(target=_blank)
+  - 하단 탭 바에 Home/Event/Board 세 개만 존재, Account 요소가 DOM에 없음
+  - Event 탭 클릭 시 `/search` 경로로 이동
+  - Board 탭 클릭 시 설문 URL로 아웃바운드
 ---
 
-# 스텝 03 — UI 구현
+# 스텝
 
 ## 목표
 
-감상 기록 목록, 작성/수정 폼, 필터/정렬 컨트롤을 브라우저에서 사용할 수 있게 만든다.
+PDF p.2의 Home 화면 변경 지시를 반영해 로고/검색바/설문 베너/3개 섹션/3탭 하단 바를 구축한다. 섹션 데이터는 step-02의 `getSection`으로 조회한다.
 
 ## 범위 안
 
-- 메인 페이지: 감상 기록 목록 (카드 또는 리스트 형태)
-- 새 기록 작성 폼 (제목, 별점, 한줄평, 상세 리뷰, 감상 날짜)
-- 기록 수정 폼 (기존 값 로드)
-- 삭제 확인 UI
-- 필터 컨트롤 (별점 범위, 날짜 범위)
-- 정렬 컨트롤 (최신순, 별점순, 제목순)
-- 빈 상태 안내 (기록이 없을 때)
+- Home 라우트 구현 및 서버 컴포넌트 기본값 활용.
+- 상단 구성: 로고 placeholder → 지구본 아이콘(UI only) → 검색바 → **설문 베너**(최상단 고정) 순.
+- 섹션 렌더: `new-releases`, `popular-picks`, `korea-picks` 순으로 가로 스크롤 포스터 그리드.
+- 하단 탭 바 고정 — 현재 라우트 하이라이트, Account 없음.
+- 설문 URL 환경변수 주입 로직과 `.env.example` 샘플.
+- `CLAUDE.md`에 환경변수 키와 placeholder 교체 지점 업데이트.
 
 ## 범위 밖
 
-- 반응형 세부 조정 (step-04에서 처리)
-- 테스트 추가
+- Search/Filter 라우트 실제 구현(step-04).
+- Title Detail 라우트(step-05).
+- 이미지 최적화, 지역화 실제 언어 전환.
+- 애니메이션/제스처 튜닝.
 
 ## 산출물
 
-- `app/page.tsx` — 메인 목록 페이지
-- `app/reviews/new/page.tsx` — 새 기록 작성
-- `app/reviews/[id]/edit/page.tsx` — 기록 수정
-- `components/` — ReviewCard, ReviewForm, FilterBar, SortControl 등
+- 상기 컴포넌트 파일과 `app/page.tsx`.
+- Vitest: 섹션 순서 렌더, 하단 탭 구성, 설문 베너 href 테스트.
+- Playwright: Home 로드 시 섹션 순서·탭 구성·설문 베너 스크린샷 시나리오.
+- `docs/verification/evidence/step-03/` 아래 Playwright 스크린샷.
 
 ## 승인 기준
 
-- 새 감상 기록을 작성하고 목록에서 확인할 수 있다
-- 기존 기록을 수정할 수 있다
-- 기록을 삭제할 수 있다
-- 필터 (별점, 날짜)를 적용하면 목록이 갱신된다
-- 정렬을 변경하면 목록 순서가 바뀐다
-- 기록이 없을 때 안내 메시지가 표시된다
+| Criteria | Evidence Type |
+| --- | --- |
+| Home 페이지에서 3개 섹션이 지정된 순서(신작→인기작 픽→코리아 픽)로 렌더 | test (Vitest + Playwright) |
+| 설문 베너 링크 href가 `NEXT_PUBLIC_SURVEY_URL` 값과 일치하고 `target="_blank"` | test |
+| 하단 탭 바가 Home/Event/Board 3개만 존재(Account 없음) | test |
+| Event 탭 클릭 시 `/search` 로 이동(Playwright 시나리오) | test |
+| Home 모바일 뷰포트 스크린샷이 증거 폴더에 저장 | file-check |

@@ -1,39 +1,60 @@
 ---
 id: step-04
-title: 반응형 레이아웃 및 마무리
-status: draft
-depends_on: [step-03]
-outputs: [반응형 UI, README]
-acceptance: [모바일 뷰포트에서 레이아웃 정상, README 존재, 전체 기능 최종 확인]
+title: search-filter-screen
+status: completed
+screen_ids: [search-filter-results]
+visual_scope: approximate
+depends_on: [step-01, step-02, step-03]
+outputs:
+  - `app/search/page.tsx` — 검색/필터 라우트, `q` 쿼리 스트링 지원
+  - `app/(components)/FilterBar.tsx` — Country / Genre / Platform 칩 UI, Platform은 텍스트-only
+  - `app/(components)/FilterHeader.tsx` — 뒤로가기 + 키워드 입력
+  - `app/(components)/SortDropdown.tsx` — `Latest first` 기본
+  - `app/(components)/ResultsGrid.tsx` — 3열 포스터 카드 그리드 + 결과 수 표기
+acceptance:
+  - Event 탭 또는 Home 검색바에서 `/search`로 진입 시 기본 목록 렌더
+  - Country/Genre/Platform 칩 AND 조합으로 결과가 축소·갱신
+  - Platform 칩이 배경 없이 텍스트-only로 렌더
+  - `Results N` 카운트가 현재 결과 수와 일치
+  - `Latest first` 정렬이 year desc 순으로 적용
 ---
 
-# 스텝 04 — 반응형 레이아웃 및 마무리
+# 스텝
 
 ## 목표
 
-모바일 브라우저에서 레이아웃이 정상 동작하도록 반응형을 조정하고, README를 작성하여 프로젝트를 마무리한다.
+PDF p.3의 Search/Filter 화면을 구축하고 Event 탭 네비게이션을 연결한다. 필터 로직은 step-02의 `filterTitles`에 위임한다.
 
 ## 범위 안
 
-- Tailwind 반응형 클래스로 모바일 레이아웃 조정
-- 모바일에서 필터/정렬 UI 사용성 확인
-- 모바일에서 폼 입력 사용성 확인
-- README 작성 (설치, 실행 방법)
-- 전체 기능 최종 점검
+- `/search` 라우트 및 쿼리 스트링 연동(`q`).
+- FilterBar: 세 줄(Country/Genre/Platform) 칩. 각 칩 토글 시 로컬 상태 업데이트.
+- Platform 칩: 텍스트-only 스타일(배경/아이콘 없음).
+- 결과 그리드: 3열 포스터 + 캡션.
+- 정렬 드롭다운(`Latest first` 기본).
+- 결과 카드 탭 시 `/titles/[id]`로 네비게이션(라우트는 step-05에서 구현되지만 링크 href는 이 step에서 준비).
+- Home 검색바 제출 시 `/search?q=<keyword>`로 이동 확인.
 
 ## 범위 밖
 
-- 새로운 기능 추가
-- 배포 설정
-- 추가 테스트
+- 무한 스크롤/페이지네이션(MVP 범위에서 전체 목록 일괄 렌더).
+- Title Detail 화면 실제 구현.
+- 플랫폼 아이콘/로고 표시.
+- 필터 카테고리의 접기/펼치기 상세 애니메이션.
 
 ## 산출물
 
-- 반응형 스타일 조정된 컴포넌트들
-- `app/README.md` 또는 프로젝트 루트 README
+- 상기 컴포넌트와 `app/search/page.tsx`.
+- Vitest: 필터 조합, 정렬, 빈 결과 케이스 컴포넌트 테스트.
+- Playwright: Event 탭 클릭 → `/search` 이동, 칩 토글 → 결과 수 변화, Latest first 정렬 확인 스크린샷.
+- `docs/verification/evidence/step-04/` 스크린샷.
 
 ## 승인 기준
 
-- 375px 뷰포트에서 목록, 폼, 필터/정렬이 모두 사용 가능하다
-- README에 설치·실행 방법이 기재되어 있다
-- 전체 CRUD + 필터 + 정렬 흐름이 데스크톱과 모바일 모두에서 동작한다
+| Criteria | Evidence Type |
+| --- | --- |
+| Event 탭에서 `/search`로 이동하고 초기 결과 목록이 렌더 | test (Playwright) |
+| Country+Genre+Platform 각 칩을 토글하면 `Results N`이 정확한 값으로 갱신 | test |
+| Platform 칩이 배경·아이콘 없이 텍스트-only 스타일로 렌더 | test (DOM 클래스/스타일 검증) |
+| 결과 카드 href가 `/titles/{id}`를 가리킴 | test |
+| 모바일 뷰포트 Playwright 스크린샷 저장 | file-check |

@@ -1,40 +1,51 @@
 ---
 name: author-product-requirements
-description: 요구사항 문서가 아직 없고, 사용자가 짧은 아이디어나 한 줄 설명만 제공한 상태에서 이를 확인 가능한 구조화된 요구사항 초안으로 바꿔야 할 때 사용합니다.
+description: Use when no requirements document exists yet and the harness needs to turn either a rough user idea or a completed visual-source analysis into a structured product requirements draft before planning.
 ---
 
-# 제품 요구사항 초안 작성
+# Author Product Requirements
 
-## 개요
+## Overview
 
-이 스킬은 사용자의 짧은 아이디어를 구조화된 요구사항 초안으로 바꿉니다.
+This skill turns raw input into a structured requirements draft.
 
-개발 결정을 내리지는 않습니다.
+It does not choose implementation details, create plans, or start coding.
 
-계획을 시작하지도 않습니다.
+## When to Use
 
-## 사용 시점
+- `docs/requirements/` does not yet contain the active requirements document
+- The user has only provided a rough idea, short prompt, or loosely structured request
+- A visual analysis document already exists and must be promoted into requirements
+- Planning cannot begin safely without a structured requirements file
 
-- `docs/requirements/` 아래에 요구사항 문서가 아직 없을 때
-- 사용자가 만들고 싶은 것을 비정형적이거나 아주 간단한 형태로만 설명했을 때
-- 계획을 시작하기 전에 구조화된 요구사항 문서가 필요할 때
+Do not use this skill if a current requirements document already exists and is still the source of truth.
 
-요구사항 문서가 이미 있다면 이 스킬을 사용하지 않습니다.
-
-## 먼저 읽을 문서
+## Read These First
 
 - `CLAUDE.md`
 - `templates/product-requirements-template.md`
-- 이전 프로젝트에서 재사용할 수 있는 맥락이 있다면 `memory/project-memory.md`
+- `docs/visual-analysis/visual-source-analysis.md` if it exists
+- `memory/project-memory.md` if it contains reusable defaults that do not change scope
 
-## 핵심 규칙
+## Core Rule
 
-큰 그림만 초안으로 작성합니다. 어떻게 만들지는 결정하지 않습니다.
+Requirements authoring is a promotion step, not an invention step.
 
-## 절차
+If the input is visual, promote the recorded screen inventory into explicit requirements instead of re-interpreting the PDF from scratch.
 
-1. 사용자의 아이디어를 읽습니다
-2. 합리적으로 추론할 수 있는 범위 내에서 템플릿 구조를 채웁니다:
+## Closure Metadata Rule
+
+- Always set `Status: draft` when creating a new requirements file
+- Leave `Confirmed By` and `Confirmed At` empty at authoring time
+- Set `Linked Planning State` to the relative path of `docs/plans/planning-state.md` (create the path value even if the planning state file does not yet exist — the planner stage will create it)
+- Do not set `Status: confirmed` in this skill. Only `assess-product-requirements` performs that transition after user approval.
+
+## Process
+
+1. Read the user's direct request
+2. If `docs/visual-analysis/visual-source-analysis.md` exists, treat it as fixed input
+3. Fill the requirements template using only supported input:
+   - Metadata (see closure rule below)
    - Goal
    - Problem
    - Users
@@ -42,50 +53,47 @@ description: 요구사항 문서가 아직 없고, 사용자가 짧은 아이디
    - Out of Scope
    - Constraints
    - Success Criteria
-3. 사용자 입력만으로는 알 수 없는 항목은 `[undecided]`로 적습니다
-4. 전체 초안을 한 번에 사용자에게 보여줍니다
-5. 초안을 확인, 수정, 거절 중 하나로 응답해 달라고 요청합니다
-6. 확인된 버전을 `docs/requirements/{project-name}.md`로 저장합니다
-7. `assess-product-requirements`로 넘깁니다
+   - Input Sources
+   - Screen Coverage
+4. Turn every included screen from the visual analysis into explicit scope or success criteria
+5. Preserve explicit exclusions from the visual analysis instead of silently re-including them
+6. Keep unresolved items as `[undecided]`
+7. Show the full draft to the user
+8. Ask for `confirm`, `modify`, or `reject`
+9. Save the confirmed document to `docs/requirements/{project-name}.md`
+10. Hand off to `assess-product-requirements`
 
-## 즉시 멈추는 경우
+## Hard Stop
 
-다음 경우에는 멈추고 사용자 입력을 기다립니다:
+Stop and wait for the user if:
 
-- 아이디어가 너무 모호해서 Goal과 Core Features조차 채우기 어려울 때
-- 사용자가 초안을 거절하고 수정을 요구할 때
-- 초안을 만들려면 사용자가 말하지 않은 제품 범위를 추측해야 할 때
+- The visual analysis still contains unresolved scope ambiguity
+- The user rejects the draft
+- Creating the draft would require silently adding or removing screens
 
-## 자동 진행 가능
+## Auto Go
 
-다음 경우에는 계속 진행합니다:
+Continue when:
 
-- 사용자가 초안을 그대로 확인했을 때
-- 사용자가 수정 사항을 줬고 바로 반영할 수 있을 때
+- The draft can be written directly from the user's input or the visual analysis
+- Remaining uncertainty is small enough to mark as `[undecided]`
+- The user confirms the draft or requests straightforward edits
 
-## 강한 규칙
+## Strong Rules
 
-- 초안은 섹션별이 아니라 한 번에 보여줍니다
-- 사용자가 언급하거나 암시하지 않은 기능을 만들어 넣지 않습니다
-- 기술 선택은 하지 않습니다. 그것은 이후 단계의 일입니다
-- 이 스킬에서 인터뷰, 계획, 구현 문서를 만들지 않습니다
-- 정말 모르는 항목은 그럴듯한 추측 대신 `[undecided]`로 남깁니다
-- 저장된 파일은 확인되는 순간부터 human-authored input으로 취급합니다
+- Do not choose a tech stack here
+- Do not create planning or implementation documents here
+- Do not silently drop an included screen from the visual analysis
+- Do not treat a guessed exclusion as user approval
+- A received file is human-authored input
+- Never write `Status: confirmed` from this skill
 
-## 출력 형태
+## Output
 
-- `templates/product-requirements-template.md` 형식에 맞춘 전체 요구사항 초안
-- `confirm`, `modify`, `reject` 중 하나를 요청하는 명확한 질문
-- 확인 이후에는 저장된 파일 경로와 `assess-product-requirements`로의 handoff
+- A complete requirements draft using `templates/product-requirements-template.md`
+- A clear request for `confirm`, `modify`, or `reject`
+- After confirmation, a saved requirements file and handoff to `assess-product-requirements`
 
-## 흔한 실수
+## Success Condition
 
-- 사용자가 언급하지 않은 기능을 추측해서 넣는 것
-- 요구사항 단계에서 tech stack이나 architecture를 고르는 것
-- 한 번 초안 작성 대신 여러 차례 질문 라운드로 끌고 가는 것
-- 사용자 확인 없이 바로 저장하는 것
-- `[undecided]` 대신 그럴듯한 가정을 채워 넣는 것
-
-## 성공 조건
-
-`docs/requirements/` 아래에 사람이 승인한 요구사항 문서가 존재하고, 하네스가 평가 단계로 넘어갈 수 있습니다.
+`docs/requirements/` contains a confirmed requirements document strong enough to enter requirements assessment without silently shrinking the original request.

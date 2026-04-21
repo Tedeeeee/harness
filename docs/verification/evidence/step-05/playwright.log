@@ -1,0 +1,11 @@
+
+Running 6 tests using 1 worker
+
+  ✓  1 [iphone-13-portrait] › tests\e2e\detail.spec.ts:19:7 › Title detail screen › renders hero, tabs, sections, and Watch Now bar (2.9s)
+  ✓  2 [iphone-13-portrait] › tests\e2e\detail.spec.ts:34:7 › Title detail screen › no share icon in top bar, no heart icon in bottom bar (1.0s)
+  ✓  3 [iphone-13-portrait] › tests\e2e\detail.spec.ts:46:7 › Title detail screen › Watch Now href points to externalUrl and opens in new tab (1.1s)
+  ✓  4 [iphone-13-portrait] › tests\e2e\detail.spec.ts:58:7 › Title detail screen › platform badges hidden when flag is default (1.0s)
+  ✓  5 [iphone-13-portrait] › tests\e2e\detail.spec.ts:63:7 › Title detail screen › Cast list items show name-only (no Lead Cast labels) (1.1s)
+  ✓  6 [iphone-13-portrait] › tests\e2e\detail.spec.ts:75:7 › Title detail screen › captures three scroll states for evidence (1.8s)
+
+  6 passed (15.4s)

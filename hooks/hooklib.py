@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import datetime
 import json
 import os
 import pathlib
 import re
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass(frozen=True)
@@ -17,6 +18,7 @@ class ImplementationSummary:
     blockers: str | None
     pending_steps: list[str]
     active_steps: list[str]
+    completed_steps: list[str] = field(default_factory=list)
 
 
 @dataclass(frozen=True)
@@ -24,6 +26,15 @@ class PlanningSummary:
     exists: bool
     project: str | None
     stages: dict[str, str]
+    planning_final_status: str | None = None
+    requirements_confirmed: str | None = None
+
+
+@dataclass(frozen=True)
+class RequirementsSummary:
+    exists: bool
+    status: str | None
+    path: pathlib.Path | None
 
 
 @dataclass(frozen=True)
@@ -80,10 +91,11 @@ def get_implementation_summary(project_root: pathlib.Path | None = None) -> Impl
     root = project_root or get_project_path()
     text = _read_text(root / "docs" / "implementation" / "implementation-state.md")
     if not text:
-        return ImplementationSummary(False, None, None, None, None, [], [])
+        return ImplementationSummary(False, None, None, None, None, [], [], [])
 
     pending_steps: list[str] = []
     active_steps: list[str] = []
+    completed_steps: list[str] = []
     for line in text.splitlines():
         pending = re.match(r"^\|\s*(step-\d+)\s*\|\s*[^|]+\|\s*pending\s*\|", line)
         if pending:
@@ -92,6 +104,10 @@ def get_implementation_summary(project_root: pathlib.Path | None = None) -> Impl
         active = re.match(r"^\|\s*(step-\d+)\s*\|\s*[^|]+\|\s*in_progress\s*\|", line)
         if active:
             active_steps.append(active.group(1))
+            continue
+        completed = re.match(r"^\|\s*(step-\d+)\s*\|\s*[^|]+\|\s*completed\s*\|", line)
+        if completed:
+            completed_steps.append(completed.group(1))
 
     return ImplementationSummary(
         exists=True,
@@ -101,6 +117,7 @@ def get_implementation_summary(project_root: pathlib.Path | None = None) -> Impl
         blockers=_extract_section(text, "Blockers"),
         pending_steps=pending_steps,
         active_steps=active_steps,
+        completed_steps=completed_steps,
     )
 
 
@@ -123,7 +140,86 @@ def get_planning_summary(project_root: pathlib.Path | None = None) -> PlanningSu
         exists=True,
         project=_extract_field(text, "Project"),
         stages=stages,
+        planning_final_status=_extract_field(text, "Planning Final Status"),
+        requirements_confirmed=_extract_field(text, "Requirements Confirmed"),
     )
+
+
+def get_requirements_summary(project_root: pathlib.Path | None = None) -> RequirementsSummary:
+    root = project_root or get_project_path()
+    req_dir = root / "docs" / "requirements"
+    if not req_dir.exists():
+        return RequirementsSummary(False, None, None)
+
+    candidates: list[pathlib.Path] = []
+    for entry in req_dir.iterdir():
+        if not entry.is_file():
+            continue
+        if entry.name.startswith("."):
+            continue
+        if entry.suffix.lower() != ".md":
+            continue
+        if entry.name.lower() == "readme.md":
+            continue
+        candidates.append(entry)
+
+    if not candidates:
+        return RequirementsSummary(False, None, None)
+
+    latest = max(candidates, key=lambda p: p.stat().st_mtime)
+    text = _read_text(latest) or ""
+    status = _extract_field(text, "Status")
+    return RequirementsSummary(True, status, latest)
+
+
+def detect_closure_mismatch(
+    summary: ImplementationSummary,
+    planning: PlanningSummary,
+    requirements: RequirementsSummary,
+) -> str | None:
+    if not summary.exists:
+        return None
+
+    status = (summary.current_status or "").strip().lower()
+    current_step = (summary.current_step or "").strip().lower()
+
+    is_done = status == "done"
+    if is_done and current_step and current_step != "none":
+        return (
+            "Closure mismatch: Current Status=done but Current Step is not cleared. "
+            "Run verify-current-step's closure transition to clear Current Step to 'none'."
+        )
+
+    all_completed = (
+        bool(summary.completed_steps)
+        and not summary.pending_steps
+        and not summary.active_steps
+    )
+    if all_completed and not is_done:
+        return (
+            "Closure mismatch: all steps are completed but Current Status is not 'done'. "
+            "Run verify-current-step's closure transition."
+        )
+
+    if planning.exists and is_done:
+        planning_closed = (planning.planning_final_status or "").strip().lower() == "closed"
+        if not planning_closed:
+            return (
+                "Closure mismatch: implementation-state is done but planning-state "
+                "Planning Final Status is not 'closed'. Sync planning-state before stopping."
+            )
+
+    if requirements.exists and planning.exists:
+        req_status = (requirements.status or "").strip().lower()
+        planning_confirmed = (planning.requirements_confirmed or "").strip().lower()
+        if req_status == "confirmed" and planning_confirmed != "yes":
+            return (
+                "Closure mismatch: requirements Status=confirmed but planning-state "
+                "Requirements Confirmed is not 'yes'. Re-run assess-product-requirements "
+                "to sync the two documents."
+            )
+
+    return None
 
 
 def get_memory_summary(project_root: pathlib.Path | None = None) -> MemorySummary:
@@ -168,6 +264,131 @@ def block_decision_json(reason: str) -> str:
         ensure_ascii=False,
         separators=(",", ":"),
     )
+
+
+_TRACE_EVENT_TYPES = frozenset(
+    {
+        "hook",
+        "skill-selected",
+        "memory-read",
+        "memory-promoted",
+        "blocker",
+        "closure",
+        "visual-pass",
+        "parallel-start",
+        "parallel-join",
+    }
+)
+
+
+def append_trace(
+    event_type: str,
+    actor: str,
+    reason: str,
+    detail: str | None = None,
+    project_root: pathlib.Path | None = None,
+    now: datetime.datetime | None = None,
+) -> pathlib.Path:
+    """Append a single trace entry to the current day's trace file.
+
+    Silent no-op path: trace writes must never break a hook. If the
+    directory cannot be created or the file cannot be written, this
+    function swallows the error and returns the intended path.
+    """
+    if event_type not in _TRACE_EVENT_TYPES:
+        raise ValueError(f"unknown trace event_type: {event_type}")
+
+    root = project_root or get_project_path()
+    moment = now or datetime.datetime.now()
+    day = moment.strftime("%Y-%m-%d")
+    timestamp = moment.strftime("%Y-%m-%dT%H:%M:%S")
+
+    safe_reason = _sanitize_trace_field(reason)
+    safe_actor = _sanitize_trace_field(actor)
+    safe_detail = _sanitize_trace_field(detail) if detail else None
+
+    entry = f"- {timestamp} [{event_type}] {safe_actor} — {safe_reason}"
+    if safe_detail:
+        entry = f"{entry} | {safe_detail}"
+
+    trace_dir = root / "docs" / "trace"
+    trace_path = trace_dir / f"trace-{day}.md"
+
+    try:
+        trace_dir.mkdir(parents=True, exist_ok=True)
+        if not trace_path.exists():
+            header = (
+                f"# Trace — {day}\n\n"
+                "형식: `- TIMESTAMP [event_type] actor — reason | detail`\n\n"
+            )
+            trace_path.write_text(header, encoding="utf-8")
+        with trace_path.open("a", encoding="utf-8") as fh:
+            fh.write(entry + "\n")
+    except OSError:
+        pass
+
+    return trace_path
+
+
+def _sanitize_trace_field(value: str | None) -> str:
+    if value is None:
+        return ""
+    return value.replace("\r", " ").replace("\n", " ").strip()
+
+
+_INTERRUPT_KEYWORDS = (
+    "잠깐",
+    "먼저",
+    "일단",
+    "wait",
+    "pause",
+    "hold on",
+    "stop",
+)
+
+
+_CONTINUATION_KEYWORDS = (
+    "계속",
+    "진행",
+    "확인",
+    "맞아",
+    "ok",
+    "okay",
+    "continue",
+    "proceed",
+    "yes",
+    "go ahead",
+)
+
+
+def detect_interrupt(prompt_text: str, summary: ImplementationSummary) -> bool:
+    """Return True if the new user prompt should be treated as an interrupt.
+
+    Heuristics are intentionally narrow to avoid false positives:
+    - Only relevant when implementation is actively in progress.
+    - A simple continuation phrase ("계속", "ok", ...) is never an interrupt.
+    - An explicit interrupt keyword ("잠깐", "먼저", "wait", ...) flips to interrupt.
+    - Otherwise default to False — the harness continues normally.
+    """
+    if not summary.exists:
+        return False
+
+    status = (summary.current_status or "").strip().lower()
+    if status not in {"in_progress", "verification-ready"}:
+        return False
+
+    normalized = prompt_text.strip().lower()
+    if not normalized:
+        return False
+
+    if any(token in normalized for token in _CONTINUATION_KEYWORDS):
+        if not any(keyword in normalized for keyword in _INTERRUPT_KEYWORDS):
+            return False
+
+    if any(keyword in normalized for keyword in _INTERRUPT_KEYWORDS):
+        return True
+
+    return False
 
 
 def _is_blocked(summary: ImplementationSummary) -> bool:

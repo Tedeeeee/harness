@@ -1,64 +1,72 @@
-# 셀프 하네스 시작점
+# Self Harness Start
 
-당신은 docs-first 하네스를 운영하고 있습니다.
+You are operating a docs-first harness.
 
-당신의 첫 번째 일은 기능을 지어내거나 곧바로 구현으로 뛰어드는 것이 아닙니다.
+Your first job is not to implement immediately. Your first job is to recover state and decide the correct next owner.
 
-당신의 첫 번째 일은 세션이 바뀌어도 planning과 execution이 안전하게 이어질 수 있도록 state model을 존중하고 유지하는 것입니다.
+## Operating Order
 
-## 운영 순서
+1. If the previous project is complete and the user is starting new work, use `project-transition`
+2. Read the latest active input from `docs/requirements/`
+3. If the main input is a PDF, image set, wireframe, screenshot collection, or prototype, create `docs/visual-analysis/visual-source-analysis.md` before requirements authoring
+4. Confirm the technical approach before detailed planning starts
+5. Ask through planner skills if planning cannot safely continue
+6. Track planning progress with `docs/plans/planning-state.md`
+7. Only write planning docs after decisions are confirmed
+8. During implementation, use step-gated execution
+9. Close completion with verification evidence, not claims
 
-1. 이전 프로젝트가 done이라면 `project-transition`으로 docs를 초기화합니다
-2. `docs/requirements/` 아래에서 가장 최신의 human-authored requirements 문서를 읽습니다
-3. 상세 planning을 시작하기 전에 기술 접근 방식을 먼저 확정합니다
-4. planning을 안전하게 시작할 수 없다면 planner skill을 통해 질문합니다
-5. `docs/plans/planning-state.md`로 planning 진행 상황을 추적합니다
-6. decision이 confirmed된 뒤에만 planning 문서를 작성합니다
-7. implementation 동안에는 step-gated execution을 사용합니다
-8. 완료는 주장으로 닫지 말고 verification evidence로 닫습니다
+## Operating Rules
 
-## 협상 불가 규칙
+### 1. Requirements are human input
 
-### 1. 요구사항은 human input이다
+Files under `docs/requirements/` are human-authored input.
 
-`docs/requirements/` 아래 파일은 human-authored input입니다.
+- Do not overwrite them
+- Do not interpret them too aggressively
+- Do not treat extracted scope as if it were confirmed by the user
 
-- 덮어쓰지 않습니다
-- 제자리에서 풍부화하지 않습니다
-- 추론한 scope를 사람이 쓴 것처럼 취급하지 않습니다
+### 2. Visual sources are analyzed before they become requirements
 
-### 2. state model이 source of truth다
+PDFs, wireframes, prototypes, screenshots, and similar visual sources are not promoted directly into requirements.
 
-현재 상태를 복원할 때는 이 디렉터리의 docs를 사용합니다.
+First convert them into `docs/visual-analysis/visual-source-analysis.md`.
 
-conversation memory만 믿지 않습니다.
+That analysis must:
 
-### 3. planning과 execution은 분리된 역할이다
+- inventory visible screens
+- record mandatory hidden, moved, linked, or relabeled elements
+- record explicit exclusions
+- raise one concise question if visual scope is ambiguous
 
-- Planner는 질문하고, 확인하고, 결정을 구조화합니다
-- Executor는 active step만 구현합니다
-- Verifier는 evidence로만 completion을 닫습니다
+### 3. State documents are the source of truth
 
-### 4. 완료에는 증거가 필요하다
+Recover current state from `docs/`, not from conversation memory alone.
 
-verification evidence가 없으면 어떤 step도 완료가 아닙니다.
+### 4. Planning and execution are separate roles
 
-step별 verification은 `docs/verification/step-xx-verification.md`에 남겨야 합니다.
+- Planner asks, confirms, and structures decisions
+- Executor only works on the current active step
+- Verifier closes steps using evidence
 
-`docs/implementation/implementation-state.md`는 상태판이지 verification evidence의 대체물이 아닙니다.
+### 5. Completion requires evidence
 
-### 5. hook은 전이를 자동화할 뿐 권한을 가지지 않는다
+Every completed step needs a verification document under `docs/verification/step-xx-verification.md`.
 
-hook은 다음 owner를 자동으로 트리거할 수 있습니다.
+`docs/implementation/implementation-state.md` is a state board, not a replacement for verification evidence.
 
-scope를 발명하거나, evidence를 건너뛰거나, planner 승인 규칙을 우회하지는 않습니다.
+### 6. Hooks may connect flow, but not bypass rules
 
-## 범위
+Hooks may trigger the next owner automatically.
 
-이 하네스는 다음을 사용합니다:
+Hooks may not invent scope, skip evidence, or bypass planner confirmation rules.
+
+## Scope
+
+This harness currently includes:
 
 - docs-first state model
-- 최소 skill 세트
-- `hooks/` 아래의 첫 번째 hook 계층
-
-앞으로의 업그레이드는 버전이 다른 새 하네스를 만드는 대신, 이 단일 하네스를 더 강하게 만드는 방향이어야 합니다.
+- planning, execution, verification, and closure skills
+- runtime hooks
+- memory
+- visual-source analysis before requirements promotion

@@ -1,0 +1,21 @@
+
+Running 16 tests using 1 worker
+
+  ✓   1 [iphone-13-portrait] › tests\e2e\detail.spec.ts:19:7 › Title detail screen › renders hero, tabs, sections, and Watch Now bar (2.4s)
+  ✓   2 [iphone-13-portrait] › tests\e2e\detail.spec.ts:34:7 › Title detail screen › no share icon in top bar, no heart icon in bottom bar (1.0s)
+  ✓   3 [iphone-13-portrait] › tests\e2e\detail.spec.ts:46:7 › Title detail screen › Watch Now href points to externalUrl and opens in new tab (1.0s)
+  ✓   4 [iphone-13-portrait] › tests\e2e\detail.spec.ts:58:7 › Title detail screen › platform badges hidden when flag is default (1.0s)
+  ✓   5 [iphone-13-portrait] › tests\e2e\detail.spec.ts:63:7 › Title detail screen › Cast list items show name-only (no Lead Cast labels) (804ms)
+  ✓   6 [iphone-13-portrait] › tests\e2e\detail.spec.ts:75:7 › Title detail screen › captures three scroll states for evidence (1.3s)
+  ✓   7 [iphone-13-portrait] › tests\e2e\home.spec.ts:17:7 › Home screen › renders three curated sections in order (1.0s)
+  ✓   8 [iphone-13-portrait] › tests\e2e\home.spec.ts:30:7 › Home screen › survey banner opens externally with survey URL (811ms)
+  ✓   9 [iphone-13-portrait] › tests\e2e\home.spec.ts:39:7 › Home screen › bottom tab bar shows exactly Home/Event/Board without Account (1.1s)
+  ✓  10 [iphone-13-portrait] › tests\e2e\home.spec.ts:58:7 › Home screen › Event tab navigates to /search (2.0s)
+  ✓  11 [iphone-13-portrait] › tests\e2e\regression.spec.ts:17:7 › End-to-end regression › Home → Search → Detail → Watch Now → Back → Board (3.7s)
+  ✓  12 [iphone-13-portrait] › tests\e2e\search.spec.ts:17:7 › Search + Filter screen › Event tab lands on /search with default results (1.4s)
+  ✓  13 [iphone-13-portrait] › tests\e2e\search.spec.ts:30:7 › Search + Filter screen › toggling country + genre + platform narrows results (1.6s)
+  ✓  14 [iphone-13-portrait] › tests\e2e\search.spec.ts:44:7 › Search + Filter screen › result cards link to /titles/{id} (888ms)
+  ✓  15 [iphone-13-portrait] › tests\e2e\search.spec.ts:51:7 › Search + Filter screen › platform chips render as text-only (no pill background) (870ms)
+  ✓  16 [iphone-13-portrait] › tests\e2e\search.spec.ts:61:7 › Search + Filter screen › initial keyword from URL is applied (909ms)
+
+  16 passed (28.6s)

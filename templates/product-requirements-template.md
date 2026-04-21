@@ -1,35 +1,60 @@
-# 제품 요구사항
+# Product Requirements
 
-## 목표
+## Metadata
 
-무엇을 만들어야 하는지 한두 문장으로 설명합니다.
+- Status: draft | assessed | confirmed
+- Confirmed By:
+- Confirmed At:
+- Linked Planning State:
 
-## 문제
+Rule:
 
-현재 어떤 문제가 있고, 왜 중요한지 적습니다.
+- authoring 시에는 `Status: draft`로 시작한다
+- assess-product-requirements가 사용자 승인과 함께 `Status: confirmed`로 전환한다
+- `Linked Planning State`는 `docs/plans/planning-state.md`를 가리키는 상대 경로여야 한다
 
-## 사용자
+## Input Sources
 
-- 주요 사용자
-- 보조 사용자
+- Primary Text Input:
+- Visual Source of Truth:
+- Notes:
 
-## 핵심 기능
+## Goal
 
-- 기능 1
-- 기능 2
+Explain in one or two sentences what must be built.
 
-## 범위 밖
+## Problem
 
-- 제외 항목 1
-- 제외 항목 2
+Describe the problem and why it matters.
 
-## 제약사항
+## Users
 
-- 일정 제약
-- 기술 제약
-- 운영 제약
+- Primary user:
+- Secondary user:
 
-## 성공 기준
+## Core Features
 
-- 관찰 가능한 결과 1
-- 관찰 가능한 결과 2
+- Feature 1
+- Feature 2
+
+## Out of Scope
+
+- Exclusion 1
+- Exclusion 2
+
+## Constraints
+
+- Schedule constraint
+- Technical constraint
+- Operational constraint
+
+## Success Criteria
+
+- Observable outcome 1
+- Observable outcome 2
+
+## Screen Coverage
+
+- Included screens:
+- Excluded screens:
+- Open visual ambiguities:

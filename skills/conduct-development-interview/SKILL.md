@@ -29,6 +29,19 @@ description: 제품 요구사항과 기술 접근 방식이 이미 계획 시작
 - `docs/requirements/` 아래 최신 파일
 - 존재한다면 `docs/architecture/technical-approach.md`
 - `templates/development-interview-decisions-template.md`
+- `memory/project-memory.md` (반복 결정, 기본값 후보)
+- `memory/harness-memory.md` (안정된 선호)
+
+## Memory 기반 Default 제안
+
+인터뷰 질문을 만들 때 먼저 관련 memory를 확인합니다. memory에 해당 질문의 기본값이 이미 있으면:
+
+1. 질문 옵션 `1`에 해당 기본값을 **default (from memory)** 라벨과 함께 배치합니다
+2. 사용자가 `1`을 선택하면 `assumed default (from memory)`로 기록합니다
+3. 사용자가 다른 옵션을 선택하거나 거부하면, 해당 memory 항목이 이 프로젝트에서 뒤집혔음을 interview decisions 문서 notes에 기록합니다
+4. `append_trace(event_type="memory-read", actor="conduct-development-interview", reason=..., detail=질문 주제)`로 한 줄 기록합니다
+
+Memory에 해당 질문의 기본값이 없으면 기존 절차대로 진행합니다.
 
 ## 핵심 규칙
 

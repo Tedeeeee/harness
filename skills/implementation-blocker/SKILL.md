@@ -75,6 +75,15 @@ executor가 사용자와 직접 scope를 협상하면 안 됩니다.
 - 다음 action에 대한 recommended owner
 - blocker note가 반영된 implementation state
 
+## Trace
+
+분류 후 `templates/trace-entry-template.md` 포맷으로 trace에 한 줄 기록합니다:
+
+- event_type: `blocker`
+- actor: `implementation-blocker`
+- reason: 분류 (`implementation-detail` | `plan-conflict` | `scope-change` | `external-environment`)
+- detail: 다음 owner (`executor` | `planner` | `user-input`)
+
 ## 성공 조건
 
 하네스가 계속 구현할지, planning으로 돌아갈지, 사용자 입력을 요청할지 판단할 수 있습니다.

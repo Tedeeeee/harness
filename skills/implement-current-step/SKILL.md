@@ -69,6 +69,20 @@ active step만 구현하고 `verification-ready`에서 멈춥니다.
 - product scope를 조용히 확장하지 않습니다
 - verification evidence를 `implementation-state.md`에 적지 않습니다
 
+## Interrupt 처리
+
+`Current Status = interrupted_by_user`로 들어온 경우:
+
+1. `User Interruption.Request Summary`를 읽고 사용자 새 요청을 파악합니다
+2. 새 요청이 현재 step boundary 안에서 해소 가능하면 그대로 처리 후:
+   - `Handling Status: handled`로 표시
+   - `Current Status`를 `Original Status`(보통 `in_progress`)로 복귀
+   - `User Interruption` 섹션을 기본값(`Active: no`, 나머지 비움)으로 리셋
+3. 새 요청이 step boundary를 벗어나면:
+   - `Handling Status: merged`로 표시
+   - `implementation-blocker`로 라우팅 (scope-change 또는 plan-conflict 분류)
+   - 이 경우 원래 step으로의 복귀는 blocker 처리 이후 planner 판단
+
 ## 출력 형태
 
 - active step에 대한 code, config, documentation 변경
