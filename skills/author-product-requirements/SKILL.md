@@ -31,7 +31,7 @@ Do not use this skill if a current requirements document already exists and is s
 
 Requirements authoring is a promotion step, not an invention step.
 
-If the input is visual, promote the recorded screen inventory into explicit requirements instead of re-interpreting the PDF from scratch.
+If the input is visual or prototype-driven, promote the recorded analysis into explicit requirements instead of re-interpreting the source artifact from scratch.
 
 ## Closure Metadata Rule
 
@@ -52,22 +52,29 @@ If the input is visual, promote the recorded screen inventory into explicit requ
    - Core Features
    - Out of Scope
    - Constraints
+   - Prototype Input Notes
    - Success Criteria
    - Input Sources
    - Screen Coverage
-4. Turn every included screen from the visual analysis into explicit scope or success criteria
-5. Preserve explicit exclusions from the visual analysis instead of silently re-including them
-6. Keep unresolved items as `[undecided]`
-7. Show the full draft to the user
-8. Ask for `confirm`, `modify`, or `reject`
-9. Save the confirmed document to `docs/requirements/{project-name}.md`
-10. Hand off to `assess-product-requirements`
+4. Turn every included screen from the analysis into explicit scope or success criteria
+5. Apply confidence-based promotion rules:
+   - `explicit`: may be promoted directly into scope, flows, or success criteria
+   - `inferred`: may be promoted, but keep wording careful and traceable to the source
+   - `demo-suspect`: do not silently promote into final product contract
+   - `needs-confirm`: preserve as `[undecided]` or ask the user if planning-critical
+6. Preserve explicit exclusions from the analysis instead of silently re-including them
+7. Keep unresolved items as `[undecided]`
+8. Show the full draft to the user
+9. Ask for `confirm`, `modify`, or `reject`
+10. Save the confirmed document to `docs/requirements/{project-name}.md`
+11. Hand off to `assess-product-requirements`
 
 ## Hard Stop
 
 Stop and wait for the user if:
 
 - The visual analysis still contains unresolved scope ambiguity
+- The source analysis contains planning-critical `needs-confirm` items
 - The user rejects the draft
 - Creating the draft would require silently adding or removing screens
 
@@ -87,6 +94,8 @@ Continue when:
 - Do not treat a guessed exclusion as user approval
 - A received file is human-authored input
 - Never write `Status: confirmed` from this skill
+- Do not silently convert `demo-suspect` behavior into final product requirements
+- If a prototype bundle is the input, treat it as a requirements-draft input, not a final implementation contract
 
 ## Output
 
@@ -96,4 +105,4 @@ Continue when:
 
 ## Success Condition
 
-`docs/requirements/` contains a confirmed requirements document strong enough to enter requirements assessment without silently shrinking the original request.
+`docs/requirements/` contains a confirmed requirements document strong enough to enter requirements assessment without silently shrinking the original request or hard-freezing demo-only implementation details.

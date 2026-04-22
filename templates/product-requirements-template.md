@@ -17,6 +17,7 @@ Rule:
 
 - Primary Text Input:
 - Visual Source of Truth:
+- Prototype Source Input:
 - Notes:
 
 ## Goal
@@ -47,6 +48,12 @@ Describe the problem and why it matters.
 - Schedule constraint
 - Technical constraint
 - Operational constraint
+
+## Prototype Input Notes
+
+- Product behaviors promoted from prototype input:
+- Prototype-only implementation details not promoted:
+- Needs confirmation:
 
 ## Success Criteria
 

@@ -5,6 +5,7 @@
 - Source File:
 - Source Type:
 - Coverage Mode:
+- Input Mode:
 - Last Updated:
 
 Coverage mode values:
@@ -12,6 +13,12 @@ Coverage mode values:
 - `all-visible-screens`
 - `change-directives-only`
 - `mixed`
+
+Input mode values:
+
+- `visual-only`
+- `visual-plus-prototype-code`
+- `prototype-code-primary`
 
 ## Global Directives
 
@@ -35,6 +42,55 @@ Inclusion status values:
 - `excluded`
 - `ambiguous`
 
+Confidence tags to use in notes or dedicated bullet lists:
+
+- `explicit`
+- `inferred`
+- `demo-suspect`
+- `needs-confirm`
+
+When possible, cite a source reference such as page/frame/component/file.
+
+## Interaction Inventory
+
+- Interaction:
+  - Type:
+  - Trigger:
+  - Result:
+  - Confidence:
+  - Source Ref:
+
+## Route / Navigation Signals
+
+- Route or state:
+  - Entry:
+  - Exit or next state:
+  - Confidence:
+  - Source Ref:
+
+## Data / Entity Signals
+
+- Entity or state concept:
+  - Fields or properties observed:
+  - Product meaning:
+  - Confidence:
+  - Source Ref:
+
+## Design Token Signals
+
+- Token or theme signal:
+  - Value or pattern:
+  - Scope:
+  - Confidence:
+  - Source Ref:
+
+## Prototype-only Implementation Notes
+
+- Note:
+  - Why it may be demo-only:
+  - Confidence:
+  - Source Ref:
+
 ## Exclusions
 
 - Screen:
@@ -53,4 +109,6 @@ Inclusion status values:
 
 - Screens that must appear in requirements:
 - Global directives that must become implementation rules:
+- Items safe to promote as product requirements:
+- Items that must not be promoted directly:
 - Ambiguities that must be resolved before requirements authoring:

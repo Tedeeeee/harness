@@ -33,7 +33,10 @@
 - Authentication / Access:
 - Testing Strategy:
 - Deployment / Runtime Assumptions:
+- Prototype Reuse Boundary:
+- Prototype Rewrite Boundary:
 
 ## 메모
 
 - 최종 방향 요약에는 confirmed decision만 기록합니다.
+- 프로토타입 입력이 있었다면 무엇을 제품 계약으로 유지하고 무엇을 데모 구현으로 버릴지 기록합니다.

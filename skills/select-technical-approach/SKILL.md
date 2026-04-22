@@ -36,6 +36,8 @@ implementation plan을 쓰기 전에 implementation approach를 먼저 고릅니
 
 이 스킬은 기술 옵션을 confirmed decision으로 좁히고, 왜 그 선택을 했는지 기록합니다.
 
+prototype analysis에서 관찰된 내용을 여기서 채택 또는 폐기할 수는 있지만, 관찰 자체를 이 단계에서 다시 발명하지 않습니다.
+
 ## 절차
 
 1. 현재 requirements 문서를 fixed input으로 읽습니다
@@ -47,11 +49,19 @@ implementation plan을 쓰기 전에 implementation approach를 먼저 고릅니
    - authentication or access control
    - testing strategy
    - deployment/runtime assumptions
+   - prototype reuse and rewrite boundary
 4. 아직 해결되지 않은 decision area 중 가장 우선순위가 높은 하나를 고릅니다
 5. trade-off와 recommendation을 곁들여 viable option `2`개 또는 `3`개를 제시합니다
 6. 아직 user confirmation이 필요하면 정확히 하나의 질문만 합니다
 7. confirmed된 decision만 `docs/architecture/technical-approach.md`에 기록합니다
 8. planning이 더 이상 technical guess에 의존하지 않을 때까지 반복합니다
+
+If a prototype code bundle exists, explicitly decide here:
+
+- what behavior is preserved as product contract
+- what implementation details are replaced
+- what runtime or framework scaffolding is demo-only
+- what data or state handling must be rewritten for the real stack
 
 ## 종료 조건
 
@@ -113,4 +123,4 @@ implementation plan을 쓰기 전에 implementation approach를 먼저 고릅니
 
 ## 성공 조건
 
-하네스가 숨겨진 technical assumption에 의존하지 않고 implementation step을 계획할 수 있습니다.
+하네스가 숨겨진 technical assumption에 의존하지 않고 implementation step을 계획할 수 있으며, prototype artifact의 어떤 부분을 재사용하고 어떤 부분을 재구성할지도 명시적으로 알고 있습니다.

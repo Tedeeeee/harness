@@ -2,79 +2,424 @@
 
 ## Summary
 
-- Source File: `프로토타입_ux.pdf`
-- Source Type: 기존 `Moyza` 앱 스크린샷에 빨간 박스 + 변경 지시 주석이 붙은 PDF (5페이지)
-- Coverage Mode: `mixed` (표지 인벤토리 1p + 화면별 change-directives 4p)
-- Last Updated: 2026-04-20
+- Source File: `C:\Users\wan\Downloads\키보드판매페이지\` (index.html + styles.css + components/*.jsx)
+- Source Type: HTML / JSX / CSS prototype code bundle
+- Coverage Mode: all-visible-screens
+- Input Mode: prototype-code-primary
+- Last Updated: 2026-04-22
 
 ## Global Directives
 
-- 기존 `Moyza` 앱의 UI를 베이스로 하되, 로고/탭 구성/베너/필터 표기 등 일부 요소를 재정의한다.
-- 다크 테마, iOS 세로형 모바일 레이아웃을 그대로 유지한다.
-- 로고는 `Moyza` 대신 "전달드릴 로고"로 교체한다 (실제 로고 자산은 요구사항 단계에서 사용자에게 요청).
-- 베너/Watch Now/Board/Event 탭 등 외부로 연결되는 링크 대상은 현재 PDF에 명시돼 있지 않으므로 요구사항 단계에서 수집한다.
-- "개발 기간에 따라 숨김 처리" 문구는 런타임 조건이 아니라 **MVP 범위에서 제외 여부를 개발 일정에 맞춰 결정**한다는 의미로 해석한다.
+- 다크/라이트 테마 전환 지원 (CSS 변수 기반, localStorage 연동) [explicit, styles.css + App.jsx]
+- Pretendard Variable (본문) + Inter Tight (영문 디스플레이) + JetBrains Mono (레이블/가격) 폰트 체계 [explicit, styles.css]
+- 머스터드 골드 (`#C8922B` light / `#E0B04A` dark) 악센트 컬러 [explicit, styles.css :root]
+- 최대 너비 1440px 중앙 정렬 컨테이너, 데스크톱 48px · 모바일(768px 이하) 20px 패딩 [explicit, styles.css .container]
+- 글로벌 스크롤바 커스텀, `::selection` 악센트 [explicit, styles.css]
+- 한국어 UI 텍스트 기본, 제품명·라벨 일부 영문 [explicit, 전 컴포넌트]
 
 ## Screen Inventory
 
-| Screen | Source Page / Frame | Entry Path / Navigation | Core Visible Elements | Mandatory Changes | Inclusion Status | Notes |
-| --- | --- | --- | --- | --- | --- | --- |
-| Home | p.1 썸네일 1, p.2 전체 | 앱 진입 기본 화면, 하단 탭 `Home` | 상단 로고 + 지구본 아이콘, 키워드 검색바, `New Releases` 가로 스크롤, `Trends` 가로 스크롤, `Join now and get a free Americano!` 광고 베너, 하단 탭(Home/Event/Board/Account) | (1) 로고를 전달드릴 로고로 교체. (2) 섹션 재구성: `업데이트된 신작` → `인기작 픽` → `코리아 픽` 순으로 3개만 배치하고 나머지는 숨김. (3) 하단 광고 베너를 화면 최상단(로고 바로 아래)으로 이동 + 용도를 "설문지 링크용 베너"로 변경. (4) 하단 탭: `Account` 숨김, `Board`는 설문지 아이콘으로 교체 + 설문 링크 삽입, `Event`는 탐색(검색) 아이콘으로 교체 + 탭 선택 시 Search/Filter(2p) 화면으로 연결. (5) `Home` 탭과 지구본 아이콘은 PDF에 변경 지시가 없으므로 현재 동작 유지. | included | `코리아 픽`은 기존에 없던 섹션 — 요구사항 단계에서 큐레이션 기준 확인 필요. |
-| Search + Filter Results | p.1 썸네일 2, p.3 전체 | Home 상단 검색바 탭, 또는 하단 `Event`(탐색) 탭 클릭으로 진입 | 뒤로가기 + 키워드 입력바, `Filter` 접힘/펼침 섹션(Country / Genre / Platform 칩), `Results 6` + `Latest first` 정렬 드롭다운, 결과 포스터 그리드 | (1) `Platform` 필터 표기를 칩 아이콘/배경 없이 **플랫폼 명 텍스트만** 사용하도록 단순화. (2) 필터 카테고리(Country, Genre, Platform)와 옵션 목록(USA/Korea/China/Japan, Romance/Horror/Action/Comedy/B/L, A/B/C/D/E) 자체는 PDF에 명시된 그대로 초기 값으로 유지(실제 플랫폼 이름은 요구사항 단계에서 수집). | included | `Event` 탭이 이 화면으로 연결된다는 점이 홈 변경 지시와 쌍으로 확인됨. |
-| Title Detail — Top (포스터 + Watch Now) | p.1 썸네일 3, p.4 전체 | Home/Search 결과의 포스터 카드 탭으로 진입 | 뒤로가기, 검색 아이콘, 공유 아이콘, 히어로 포스터, 타이틀(예: `레이디 두아`), 별점(`5.0 (207건 리뷰)`), `Synopsis / Cast / Similar` 탭, Synopsis 카드 (요약 + `19+ 2025 20 EP Drama More`), 플랫폼 배지(NETFLIX / TVING / coupang play), Cast 섹션 시작부, 하단 `♥ Watch Now` 고정 바 | (1) 상단 공유 아이콘 숨김. (2) 플랫폼 배지 블록은 개발 일정에 따라 숨김 처리 가능. (3) `Watch Now` 버튼은 해당 작품의 외부 플랫폼 URL로 연결. (4) 하단 바의 하트(찜) 아이콘 숨김 + `Watch Now` 버튼을 좌우 전체폭으로 정렬. | included | 타이틀 텍스트/별점/메타 수치는 데이터 예시 — 실제 값은 콘텐츠 데이터 소스에서 옴. |
-| Title Detail — Mid (베너 + Cast) | p.1 썸네일 4, p.5 전체 | Title Detail 화면 내부 스크롤 상태 | 상단 타이틀 바 `The Art of Sarah` + 검색 + 공유, Synopsis 요약 + 메타 칩, 플랫폼 배지, `Join now and get a free Americano!` 파란 베너, `Cast` 리스트(사라 킴/박무경/정여진/김미정/오츠오 … Lead Cast 역할 라벨 포함) | (1) `Join now…` 베너를 **설문용 베너**로 재사용하고 설문 URL 링크 삽입. (2) Cast 리스트는 **이름만 표시**, `Lead Cast` 등 역할 라벨 제거. | included | 이 화면은 Detail과 동일 페이지의 스크롤 상태. 별도 라우트가 아님. |
-| Title Detail — Bottom (Synopsis 확장 + 메타 표 + Similar) | p.1 썸네일 5 | Title Detail 화면 내부 스크롤 상태 | 상단 탭 `Synopsis / Similar`(선택됨: Synopsis), 확장된 Synopsis 본문 2단락, 메타 정보 표(Title / Genre / Release Year / Episodes / Country / Age Rating), 플랫폼 배지, `View Summary` 토글, 설문 베너, Cast | Detail 화면의 같은 요소에 대해 위에서 정의한 지시가 그대로 적용된다(공유 숨김, 플랫폼 배지 조건부 숨김, 설문 베너 링크, Cast 이름만). 확장 Synopsis와 메타 정보 표 자체는 기존 UI 유지. | included | p.1 썸네일 상단 탭이 `Synopsis / Similar`로 보이나 p.4·p.5에서는 `Synopsis / Cast / Similar` 세 탭 구조. 썸네일 크롭으로 `Cast`가 가려진 것으로 간주(하단에 Cast 섹션이 여전히 존재하므로). |
+| ID | Screen | Source Page / Frame | Entry Path / Navigation | Core Visible Elements | Mandatory Changes | Inclusion Status | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| V-01 | Home | App.jsx page==='home' | 초기 진입, 로고 클릭 | Nav, Hero(인터랙티브 키보드+스위치 선택+마키), Flagships(3종), Advantages(4종), BestSellers(8종 그리드+필터+정렬), Reviews(4건), LaunchBanner(카운트다운), Footer | - | included | `explicit` |
+| V-02 | Catalog (PLP) | CatalogPage.jsx | Nav '키보드' 클릭 | 사이드바 필터(레이아웃/스위치/바디/가격), 정렬 드롭다운, 그리드/리스트 뷰 전환, 12종 제품 카드, 페이지네이션, 활성 필터 칩 | - | included | `explicit` |
+| V-03 | Product Detail (PDP) | ProductPage.jsx | 제품 카드 클릭 | 4뷰 갤러리, 변형(colorway) 선택, 스위치 선택, 수량 조절, 장바구니/구매 버튼, 탭(상세/스펙/리뷰/배송), 하이라이트 3종, 박스 구성품, 리뷰 요약 | - | included | `explicit`. 현재 kb78-pro만 상세 데이터 있음 |
+| V-04 | Cart Page | CartPage.jsx | Nav 장바구니 클릭 | 진행 단계 표시(3단계), 전체 선택/개별 선택, 수량 조절, 배송 방법(일반/특급), 선물 포장, 프로모 코드 입력, 결제 요약(소계/할인/배송/총액), 결제 수단 배지, 추천 상품 3종 | - | included | `explicit` |
+| V-05 | Profile (My Page) | ProfilePage.jsx | Nav 사용자 아이콘 클릭 | 히어로(아바타+등급+포인트), 주문 상태 스트립, 8탭 사이드바(대시보드/컬렉션/주문/찜/리뷰/AS/쿠폰/설정), 각 탭별 콘텐츠 | - | included | `explicit`. 데이터 전부 하드코딩 |
+| V-06 | Wishlist | WishlistPage.jsx (App.jsx 내) | Nav 하트 아이콘 클릭 | 정렬(최근/이름순), 제품 카드 그리드, 찜 해제, 장바구니 담기, 빈 상태 | - | included | `explicit` |
+| V-07 | Keycaps | KeycapsPage.jsx | Nav '키캡' 클릭 | 프로파일 필터(Cherry/OEM/SA/DSA/KAT), 프로파일 비교 시각화, 12종 키캡 세트 그리드, 정렬, 가이드 에디토리얼 | - | included | `explicit` |
+| V-08 | Switches | SwitchesPage.jsx | Nav '스위치' 클릭 | 타입 필터(Linear/Tactile/Clicky), 비교 선택(최대 3개), 포스 커브 시각화, 트래블 시각화, 사운드 프로파일, 6종 스위치 테이블 | - | included | `explicit` |
+| V-09 | Accessories | AccessoriesPage.jsx | Nav '액세서리' 클릭 | 카테고리 칩 필터(6종), 14종 액세서리 매거진형 그리드, 번들 3세트 | - | included | `explicit` |
+| V-10 | Magazine | MagazinePage.jsx | Nav '매거진' 클릭 | 마스트헤드, 커버 스토리, 카테고리 필터(7종), 8건 에디토리얼 그리드, 연재 컬럼 3종, 뉴스레터 구독 | - | included | `explicit` |
+| V-11 | Cart Drawer | CartDrawer.jsx | 장바구니 버튼 (사이드 패널) | 460px 오른쪽 드로어, 항목 목록, 수량 조절, 소계/배송/총액, 결제 버튼, 빈 상태 | - | included | `explicit`. 현재 open=false 고정 |
+
+## Interaction Inventory
+
+- Interaction: 테마 전환
+  - Type: toggle
+  - Trigger: Nav 해/달 아이콘 클릭
+  - Result: data-theme 속성 변경 + localStorage 저장 + CSS 변수 전환
+  - Confidence: `explicit`
+  - Source Ref: App.jsx handleToggleTheme, Nav.jsx
+
+- Interaction: 장바구니 추가
+  - Type: action
+  - Trigger: 제품 카드/상세 "장바구니 담기" 버튼
+  - Result: cart 배열에 항목 추가/수량 증가, 확인 피드백 1.5~2초
+  - Confidence: `explicit`
+  - Source Ref: App.jsx handleAdd, BestSellers.jsx, ProductPage.jsx
+
+- Interaction: 장바구니 수량 변경
+  - Type: stepper
+  - Trigger: +/- 버튼
+  - Result: 수량 변경, 0이면 제거
+  - Confidence: `explicit`
+  - Source Ref: CartPage.jsx, CartDrawer.jsx, ProductPage.jsx
+
+- Interaction: 찜 토글
+  - Type: toggle
+  - Trigger: 하트 아이콘 클릭
+  - Result: wishlist 배열 추가/제거 + localStorage 저장 + 토스트 알림 1.8초
+  - Confidence: `explicit`
+  - Source Ref: App.jsx toggleWish
+
+- Interaction: 카탈로그 필터
+  - Type: multi-select filter
+  - Trigger: 사이드바 체크박스, 활성 필터 칩 X 클릭
+  - Result: 4기준(레이아웃/스위치/바디/가격) AND 논리 필터링
+  - Confidence: `explicit`
+  - Source Ref: CatalogPage.jsx
+
+- Interaction: 정렬
+  - Type: dropdown select
+  - Trigger: 정렬 드롭다운 변경
+  - Result: 제품 목록 재정렬 (인기순=rating*reviews, 가격순, 신상품순 등)
+  - Confidence: `explicit`
+  - Source Ref: CatalogPage.jsx, BestSellers.jsx
+
+- Interaction: 뷰 전환
+  - Type: toggle
+  - Trigger: 그리드/리스트 아이콘 버튼
+  - Result: 카탈로그 레이아웃 변경
+  - Confidence: `explicit`
+  - Source Ref: CatalogPage.jsx
+
+- Interaction: 제품 변형 선택
+  - Type: radio select
+  - Trigger: colorway 스와치 클릭
+  - Result: 선택 변형 변경, 품절 변형은 선택 불가
+  - Confidence: `explicit`
+  - Source Ref: ProductPage.jsx
+
+- Interaction: 스위치 선택
+  - Type: radio select
+  - Trigger: 스위치 옵션 클릭
+  - Result: 선택 스위치 변경
+  - Confidence: `explicit`
+  - Source Ref: ProductPage.jsx
+
+- Interaction: 프로모 코드
+  - Type: form submit
+  - Trigger: 코드 입력 + "적용" 버튼
+  - Result: KEYBODER10 입력 시 10% 할인, 그 외 오류
+  - Confidence: `demo-suspect` (하드코딩 검증, 실제 서버 검증 필요)
+  - Source Ref: CartPage.jsx
+
+- Interaction: 배송 방법 선택
+  - Type: radio select
+  - Trigger: 일반/특급 라디오 버튼
+  - Result: 배송비 변경 (일반 3000원/10만 이상 무료, 특급 7000원)
+  - Confidence: `explicit`
+  - Source Ref: CartPage.jsx
+
+- Interaction: 선물 포장
+  - Type: checkbox toggle
+  - Trigger: 선물 포장 체크박스
+  - Result: +5000원 추가
+  - Confidence: `explicit`
+  - Source Ref: CartPage.jsx
+
+- Interaction: 결제 진행
+  - Type: action
+  - Trigger: "결제하기" 버튼
+  - Result: alert('결제 진행 (데모)')
+  - Confidence: `demo-suspect` (실제 결제 미구현)
+  - Source Ref: App.jsx checkout
+
+- Interaction: 키캡 프로파일 비교
+  - Type: filter + visualization
+  - Trigger: 프로파일 버튼 클릭
+  - Result: 필터링 + 높이 비교 시각화
+  - Confidence: `explicit`
+  - Source Ref: KeycapsPage.jsx
+
+- Interaction: 스위치 비교
+  - Type: multi-select (max 3)
+  - Trigger: 비교 버튼 토글
+  - Result: 최대 3개 선택, 포스커브/트래블/사운드 비교
+  - Confidence: `explicit`
+  - Source Ref: SwitchesPage.jsx
+
+- Interaction: 검색
+  - Type: action
+  - Trigger: Nav 검색 아이콘
+  - Result: 없음 (비기능)
+  - Confidence: `demo-suspect`
+  - Source Ref: Nav.jsx
+
+- Interaction: 사운드 재생
+  - Type: action
+  - Trigger: Hero 사운드 버튼, SwitchesPage 재생 버튼
+  - Result: 없음 (비기능)
+  - Confidence: `demo-suspect`
+  - Source Ref: Hero.jsx, SwitchesPage.jsx
+
+- Interaction: 뉴스레터 구독
+  - Type: form submit
+  - Trigger: 이메일 입력 + "구독하기" 버튼
+  - Result: 없음 (비기능)
+  - Confidence: `needs-confirm` (제품 의도는 있으나 구현 없음)
+  - Source Ref: MagazinePage.jsx, Footer.jsx
+
+## Route / Navigation Signals
+
+- Route or state: home
+  - Entry: 초기 진입, 로고 클릭, goHome()
+  - Exit or next state: 제품 클릭 → product, Nav 메뉴 → 각 페이지
+  - Confidence: `explicit`
+  - Source Ref: App.jsx page state
+
+- Route or state: catalog
+  - Entry: Nav '키보드', goCatalog()
+  - Exit or next state: 제품 클릭 → product
+  - Confidence: `explicit`
+  - Source Ref: App.jsx, CatalogPage.jsx
+
+- Route or state: product (동적, ID 기반)
+  - Entry: openProduct(id)
+  - Exit or next state: 뒤로가기 → 이전 페이지
+  - Confidence: `explicit`
+  - Source Ref: App.jsx, ProductPage.jsx
+
+- Route or state: cart
+  - Entry: Nav 장바구니 클릭
+  - Exit or next state: 쇼핑 계속 → home, 결제 → alert (데모)
+  - Confidence: `explicit`
+  - Source Ref: App.jsx, CartPage.jsx
+
+- Route or state: profile
+  - Entry: Nav 사용자 아이콘, goProfile()
+  - Exit or next state: 탭 내비게이션 (8탭)
+  - Confidence: `explicit`
+  - Source Ref: App.jsx, ProfilePage.jsx
+
+- Route or state: wishlist
+  - Entry: Nav 하트 아이콘, goWishlist()
+  - Exit or next state: 제품 클릭 → product, 홈으로 → home
+  - Confidence: `explicit`
+  - Source Ref: App.jsx, WishlistPage.jsx
+
+- Route or state: keycaps
+  - Entry: Nav '키캡'
+  - Exit or next state: Nav 메뉴
+  - Confidence: `explicit`
+  - Source Ref: App.jsx, KeycapsPage.jsx
+
+- Route or state: switches
+  - Entry: Nav '스위치'
+  - Exit or next state: Nav 메뉴
+  - Confidence: `explicit`
+  - Source Ref: App.jsx, SwitchesPage.jsx
+
+- Route or state: accessories
+  - Entry: Nav '액세서리'
+  - Exit or next state: Nav 메뉴
+  - Confidence: `explicit`
+  - Source Ref: App.jsx, AccessoriesPage.jsx
+
+- Route or state: magazine
+  - Entry: Nav '매거진'
+  - Exit or next state: Nav 메뉴
+  - Confidence: `explicit`
+  - Source Ref: App.jsx, MagazinePage.jsx
+
+## Data / Entity Signals
+
+- Entity or state concept: Product (키보드)
+  - Fields or properties observed: id, name, cat, price, original, rating, reviews, tag, color, switch, body, weight, stock, accent, subtitle, tagline
+  - Product meaning: 핵심 상품 엔티티, 카탈로그/상세/장바구니 전체에서 사용
+  - Confidence: `explicit`
+  - Source Ref: BestSellers.jsx PRODUCTS, CatalogPage.jsx CATALOG, Flagships.jsx FLAGSHIPS
+
+- Entity or state concept: ProductDetail (상세 스펙)
+  - Fields or properties observed: variants[{id,label,color,available}], switches[{id,label,force,travel,default}], specs[{k,v}], highlights[{num,title,body}], includes[]
+  - Product meaning: PDP 전용 확장 데이터
+  - Confidence: `explicit`
+  - Source Ref: ProductPage.jsx PRODUCT_DETAILS
+
+- Entity or state concept: Keycap (키캡 세트)
+  - Fields or properties observed: id, name, profile, material, kits, price, color1, color2, accent, tag
+  - Product meaning: 키캡 카테고리 상품
+  - Confidence: `explicit`
+  - Source Ref: KeycapsPage.jsx KEYCAPS
+
+- Entity or state concept: Switch (스위치)
+  - Fields or properties observed: id, name, type, brand, actuation, bottom, pretravel, total, sound, color, price, pack, tag, desc
+  - Product meaning: 스위치 카테고리 상품 + 기술 스펙
+  - Confidence: `explicit`
+  - Source Ref: SwitchesPage.jsx SWITCHES
+
+- Entity or state concept: Accessory (액세서리)
+  - Fields or properties observed: id, cat, name, price, material, size, color, tag
+  - Product meaning: 액세서리 카테고리 상품
+  - Confidence: `explicit`
+  - Source Ref: AccessoriesPage.jsx ACCESSORIES
+
+- Entity or state concept: Bundle (번들 세트)
+  - Fields or properties observed: title, items[], price, orig
+  - Product meaning: 큐레이션 번들 상품
+  - Confidence: `explicit`
+  - Source Ref: AccessoriesPage.jsx BUNDLES
+
+- Entity or state concept: CartItem (장바구니 항목)
+  - Fields or properties observed: id, name, cat, switch, color, price, qty
+  - Product meaning: 장바구니 상태
+  - Confidence: `explicit`
+  - Source Ref: App.jsx cart, CartPage.jsx
+
+- Entity or state concept: WishlistItem (찜 항목)
+  - Fields or properties observed: id, name, savedAt, ...product fields
+  - Product meaning: 위시리스트 상태
+  - Confidence: `explicit`
+  - Source Ref: App.jsx wishlist
+
+- Entity or state concept: User (회원)
+  - Fields or properties observed: name, handle, joined, tier, tierNext, points, coupons, lifetimeSpent, avatar, bio, tierProgress
+  - Product meaning: 회원/등급 시스템
+  - Confidence: `needs-confirm` (데모 데이터만 존재, 인증 시스템 없음)
+  - Source Ref: ProfilePage.jsx USER
+
+- Entity or state concept: Order (주문)
+  - Fields or properties observed: id, date, status, items[], total, tracking
+  - Product meaning: 주문 이력
+  - Confidence: `needs-confirm` (데모 데이터만 존재)
+  - Source Ref: ProfilePage.jsx RECENT_ORDERS
+
+- Entity or state concept: Coupon (쿠폰)
+  - Fields or properties observed: type, title, desc, code, exp, minOrder
+  - Product meaning: 할인 쿠폰
+  - Confidence: `needs-confirm` (데모 데이터만 존재)
+  - Source Ref: ProfilePage.jsx COUPONS
+
+- Entity or state concept: Article (매거진 글)
+  - Fields or properties observed: cat, title, dek, author, date, read, color, size
+  - Product meaning: 에디토리얼 콘텐츠
+  - Confidence: `explicit`
+  - Source Ref: MagazinePage.jsx ARTICLES
+
+## Design Token Signals
+
+- Token or theme signal: Color Palette (Light)
+  - Value or pattern: --bg:#FAFAF7, --bg-elev:#FFFFFF, --bg-subtle:#F1F0EA, --ink:#0E0E0C, --ink-2:#2A2A27, --ink-3:#6B6B63, --ink-4:#9A9A90, --line:#E4E2D8, --line-strong:#1A1A17, --accent:#C8922B, --accent-soft:#F4E4B8, --danger:#B23A1E
+  - Scope: global
+  - Confidence: `explicit`
+  - Source Ref: styles.css :root
+
+- Token or theme signal: Color Palette (Dark)
+  - Value or pattern: --bg:#0E0E0C, --bg-elev:#161614, --bg-subtle:#1E1E1B, --ink:#F5F4EE, --ink-2:#D6D5CD, --ink-3:#8D8C84, --ink-4:#58574F, --line:#262622, --line-strong:#F5F4EE, --accent:#E0B04A, --accent-soft:#3A2E15, --danger:#E66A4E
+  - Scope: global
+  - Confidence: `explicit`
+  - Source Ref: styles.css [data-theme="dark"]
+
+- Token or theme signal: Typography
+  - Value or pattern: Pretendard Variable (본문, -0.01em), Inter Tight (영문 디스플레이, -0.02em), JetBrains Mono (레이블/가격, tnum)
+  - Scope: global
+  - Confidence: `explicit`
+  - Source Ref: styles.css @import, .mono, .eng
+
+- Token or theme signal: Shadows
+  - Value or pattern: --shadow-sm, --shadow-md, --shadow-lg (light/dark 각각 정의)
+  - Scope: global
+  - Confidence: `explicit`
+  - Source Ref: styles.css
+
+- Token or theme signal: Spacing / Layout
+  - Value or pattern: 컨테이너 max-width 1440px, 데스크톱 padding 48px, 모바일 20px, 섹션 간격 120px, 그리드 gap 24px
+  - Scope: global
+  - Confidence: `explicit`
+  - Source Ref: styles.css, 각 컴포넌트 inline styles
+
+- Token or theme signal: Button Styles
+  - Value or pattern: padding 16px 28px, font 15px weight 500, border-radius 2px, 3종 (primary/outline/ghost)
+  - Scope: global
+  - Confidence: `explicit`
+  - Source Ref: styles.css .btn*
+
+- Token or theme signal: Animations
+  - Value or pattern: keypress(0.5s), ripple(1s), waveline(0.3s), fadeUp(0.7s cubic-bezier), marquee(40s)
+  - Scope: Hero 중심
+  - Confidence: `explicit`
+  - Source Ref: styles.css, Hero.jsx inline
+
+## Prototype-only Implementation Notes
+
+- Note: Babel standalone 브라우저 트랜스파일
+  - Why it may be demo-only: 프로덕션에서는 빌드 도구(Vite/Webpack) 사용 필수
+  - Confidence: `demo-suspect`
+  - Source Ref: index.html script tags
+
+- Note: TweakPanel 편집 모드
+  - Why it may be demo-only: postMessage 프로토콜로 외부 제어, EDITMODE 마커 주석
+  - Confidence: `demo-suspect`
+  - Source Ref: App.jsx TweakPanel, EDITMODE-BEGIN/END
+
+- Note: 악센트 컬러 런타임 변경
+  - Why it may be demo-only: 6색 스와치 실시간 교체는 프로토타입 프레젠테이션용
+  - Confidence: `demo-suspect`
+  - Source Ref: App.jsx accent state, TweakPanel
+
+- Note: alert('결제 진행 (데모)')
+  - Why it may be demo-only: 실제 결제 플로우 없음, 명시적 "(데모)" 표기
+  - Confidence: `demo-suspect`
+  - Source Ref: App.jsx checkout
+
+- Note: 하드코딩 프로모 코드 검증
+  - Why it may be demo-only: 'KEYBODER10'만 인식, 서버 검증 없음
+  - Confidence: `demo-suspect`
+  - Source Ref: CartPage.jsx promo validation
+
+- Note: BestSellers 제품 클릭 고정 ID
+  - Why it may be demo-only: onOpen('kb78-pro') 하드코딩, 실제로는 onOpen(p.id)여야 함
+  - Confidence: `demo-suspect`
+  - Source Ref: BestSellers.jsx line ~66
+
+- Note: CartDrawer open=false 고정
+  - Why it may be demo-only: 드로어 UI는 있으나 열리지 않음
+  - Confidence: `demo-suspect`
+  - Source Ref: App.jsx CartDrawer render
+
+- Note: 전체 제품 데이터 인라인 하드코딩
+  - Why it may be demo-only: PRODUCTS, CATALOG, KEYCAPS, SWITCHES 등 컴포넌트 내부 배열
+  - Confidence: `demo-suspect`
+  - Source Ref: 각 페이지 컴포넌트 상수
+
+- Note: 프로필 사용자 데이터 하드코딩
+  - Why it may be demo-only: 김타건 프로필, 주문 이력, 쿠폰 등 전부 픽스처
+  - Confidence: `demo-suspect`
+  - Source Ref: ProfilePage.jsx USER, RECENT_ORDERS 등
+
+- Note: 검색 기능 미구현
+  - Why it may be demo-only: 아이콘만 존재, 클릭 시 동작 없음
+  - Confidence: `demo-suspect`
+  - Source Ref: Nav.jsx search button
+
+- Note: 사운드 재생 미구현
+  - Why it may be demo-only: 버튼/파형 시각화는 있으나 오디오 없음
+  - Confidence: `demo-suspect`
+  - Source Ref: Hero.jsx, SwitchesPage.jsx
 
 ## Exclusions
 
-- Screen: Account 탭 / Account 페이지
-  - Reason: 하단 탭에서 `Account` 항목을 숨기라는 명시 지시(p.2)
-  - User Approved: PDF 명시
-- Screen: Home의 `Trends` 섹션 (또는 `New Releases`와 `Trends` 뒤 추가 섹션)
-  - Reason: "업데이트된 신작 / 인기작 픽 / 코리아 픽 순으로 배치, 4. 숨김 처리" 지시(p.2). 이 3개 섹션 외 기존 섹션은 숨김.
-  - User Approved: PDF 명시
-- Element: Title Detail 상단 공유 아이콘
-  - Reason: p.4 "공유 아이콘 숨김 처리"
-  - User Approved: PDF 명시
-- Element: Title Detail 하단 바 하트(찜) 아이콘
-  - Reason: p.4 "하트 이미지 숨김처리"
-  - User Approved: PDF 명시
-- Element: Title Detail 플랫폼 배지 블록 (NETFLIX / TVING / coupang play)
-  - Reason: p.4 "개발 기간에 따라 숨김 처리" — MVP에서는 기본 숨김 가정, 요구사항 단계에서 최종 결정
-  - User Approved: 조건부 (요구사항 단계 재확인 필요)
+- Screen: 없음 (전체 11개 화면 포함)
+  - Reason: 프로토타입의 모든 화면이 제품 의도를 가짐
+  - User Approved: n/a
 
 ## Ambiguities
 
-- **설문지/설문 베너 링크 대상**: Board 탭, 홈 최상단 베너, Detail 중간 베너 모두 "설문지 링크" 또는 "설문용 베너"로 연결된다고만 명시됨. 동일 설문인지, 각각 다른 설문인지, 외부 URL인지 앱 내부 뷰인지 불명. 요구사항 단계에서 링크 값과 개수를 수집해야 함.
-- **Watch Now 플랫폼 링크 매핑**: 작품별 "해당 작품 플랫폼 링크"가 데이터로 주어지는지, 메타에서 추출해야 하는지 불명. 데이터 스키마와 함께 확인 필요.
-- **전달드릴 로고 자산**: "전달드릴 로고로 변경"이라는 표현은 사용자가 이후 전달할 예정이라는 뜻으로 해석. 자산 수령 전에는 플레이스홀더를 사용해야 함.
-- **Platform 필터 옵션 `A/B/C/D/E`의 실제 이름**: PDF에는 더미로만 제시됨. 상세 화면의 실제 플랫폼 배지는 NETFLIX/TVING/coupang play 3개로 보이므로, 5개 옵션의 최종 목록이 무엇인지 요구사항 단계에서 확정 필요.
-- **"코리아 픽" 섹션 정의**: 기존 앱에는 없던 신규 섹션. 어떤 기준으로 큐레이션되는지(Country=Korea 필터와 동일? 편집팀 큐레이션?) 불명.
-- **Event 탭 전환의 세부 동작**: "2페이지 상세검색창 연결"이 탭 클릭 즉시 Search/Filter 화면으로 **대체 이동**인지, Home 위에 오버레이인지 명시적이지 않음. 기본은 일반 탭 내비게이션(라우트 변경)으로 가정.
-- **Similar 탭의 내용**: 상세 화면 상단 탭 `Similar`의 실제 컨텐츠가 PDF에 렌더링된 페이지가 없음. 탭 자체는 유지하되 목록 형태는 요구사항 단계에서 정의.
+- 프로필/주문/쿠폰/AS 시스템이 MVP 범위에 포함되는지 확인 필요 (인증/백엔드 의존)
+- 검색 기능이 제품 요구인지 향후 기능인지 확인 필요
+- 사운드 재생이 제품 요구인지 향후 기능인지 확인 필요
+- 뉴스레터 구독이 MVP에 포함되는지 확인 필요
+- 결제 플로우의 실제 범위 (데모 alert → 실제 PG 연동까지?)
 
 ## Clarifying Question
 
-- None. 가시 화면 인벤토리와 변경 지시는 충분히 명확하므로 하드스톱 없이 진행. 열린 질문은 위 **Ambiguities**에서 요구사항 단계가 해결하도록 넘긴다.
+- Resolved: 사용자가 Option C (전체 11개 화면) 선택. 2026-04-22.
 
 ## Requirements Promotion Notes
 
-- **Screens that must appear in requirements**:
-  - 홈 (Home)
-  - 검색 + 필터 결과 (Search + Filter Results)
-  - 작품 상세 (Title Detail — 단일 페이지, 스크롤 가능한 Synopsis/Cast/Similar 탭 구조)
-  - 하단 탭 내비게이션 (Home / Event(탐색) / Board(설문) 3탭, Account 제외)
-- **Global directives that must become implementation rules**:
-  - 로고는 전달드릴 자산이 도착하기 전까지 플레이스홀더.
-  - Home 섹션 순서: `업데이트된 신작` → `인기작 픽` → `코리아 픽` (그 외 섹션 비활성).
-  - 홈 최상단에 설문지 링크 베너 고정.
-  - 하단 탭은 Home / Event(탐색→검색 페이지) / Board(설문 링크) 3개.
-  - Platform 필터는 텍스트 전용 표기.
-  - Title Detail: 상단 공유 아이콘·하트 아이콘 숨김, Watch Now 버튼 전체폭·외부 링크, Cast는 이름만, 설문 베너는 링크 삽입, 플랫폼 배지 블록은 MVP 기본 숨김(결정 재확인).
-- **Ambiguities that must be resolved before requirements authoring**:
-  - 설문지 링크 URL(들) 및 단일/복수 여부
-  - Watch Now 링크가 작품 데이터 모델의 어느 필드에서 오는지
-  - 전달드릴 로고 자산 수령 타이밍
-  - Platform 필터 옵션의 실제 이름 5종
-  - "코리아 픽" 큐레이션 기준
-  - MVP에서 플랫폼 배지 블록 표시/숨김 최종 결정
+- Screens that must appear in requirements: V-01(Home), V-02(Catalog), V-03(PDP), V-04(Cart) — 이커머스 핵심 플로우
+- Global directives that must become implementation rules: 테마 전환, 디자인 토큰 체계, 폰트 체계, 컨테이너 레이아웃
+- Items safe to promote as product requirements: 장바구니 CRUD, 필터/정렬, 제품 변형 선택, 찜 토글, 다크모드
+- Items that must not be promoted directly: TweakPanel, Babel standalone, 하드코딩 데이터, alert 결제, postMessage 편집 프로토콜
+- Ambiguities that must be resolved before requirements authoring: MVP 화면 범위 (위 질문 참조)

@@ -1,6 +1,6 @@
 ---
 name: route-self-harness
-description: Use when the harness must decide the next owner or skill by interpreting the current prompt together with live document state across requirements, visual analysis, planning, implementation, verification, and project closure.
+description: Use when the harness must decide the next owner or skill by interpreting the current prompt together with live document state across requirements, source analysis, planning, implementation, verification, and project closure.
 ---
 
 # Route Self Harness
@@ -31,7 +31,7 @@ Always route using `prompt + state`, never prompt alone.
 ## Decision Order
 
 1. Check whether the previous project is already complete and a transition is required
-2. Check whether the current request is driven by a visual source of truth
+2. Check whether the current request is driven by a visual or prototype source of truth
 3. Check whether requirements authoring is still missing
 4. Check planning state
 5. Check implementation state
@@ -47,12 +47,12 @@ Always route using `prompt + state`, never prompt alone.
 
 ### Visual source mode
 
-- If the request is mainly driven by a PDF, mockup, screenshot set, wireframe, or prototype and `docs/visual-analysis/visual-source-analysis.md` does not exist -> `analyze-visual-source`
+- If the request is mainly driven by a PDF, mockup, screenshot set, wireframe, interactive prototype, or prototype code bundle and `docs/visual-analysis/visual-source-analysis.md` does not exist -> `analyze-visual-source`
 - If visual analysis exists but a requirements document does not yet exist -> `author-product-requirements`
 
 ### Planning with `planning-state.md`
 
-- If `source-analysis` is `not-started` and the request is visual-source driven -> `analyze-visual-source`
+- If `source-analysis` is `not-started` and the request is visual-source or prototype-source driven -> `analyze-visual-source`
 - If `source-analysis` is `blocked` -> `author-product-requirements` only after the blocking question is resolved
 - If requirements are missing -> `author-product-requirements`
 - If requirements are present and `requirements` is `not-assessed` -> `assess-product-requirements`
@@ -63,7 +63,7 @@ Always route using `prompt + state`, never prompt alone.
 
 ### Planning fallback without `planning-state.md`
 
-- If the request is visual-source driven and there is no visual analysis document -> `analyze-visual-source`
+- If the request is visual-source or prototype-source driven and there is no visual analysis document -> `analyze-visual-source`
 - If requirements are missing -> `author-product-requirements`
 - If requirements exist but have not been assessed -> `assess-product-requirements`
 - If technical approach is missing -> `select-technical-approach`
@@ -85,10 +85,10 @@ Always route using `prompt + state`, never prompt alone.
 
 ## Strong Rules
 
-- Do not jump from raw visual input directly into requirements or implementation
+- Do not jump from raw visual or prototype input directly into requirements or implementation
 - Do not skip planning stages aggressively
 - Do not treat every "continue" prompt literally; interpret it through state
-- If the task is visual-source driven, screen analysis must exist before requirements authoring begins
+- If the task is visual-source or prototype-source driven, source analysis must exist before requirements authoring begins
 
 ## Output
 
@@ -108,4 +108,4 @@ This entry is for debugging only and does not substitute verification evidence.
 
 ## Success Condition
 
-The harness chooses the correct next owner without skipping the visual analysis, planning, implementation, or verification contracts.
+The harness chooses the correct next owner without skipping the source analysis, planning, implementation, or verification contracts.

@@ -8,7 +8,7 @@ Your first job is not to implement immediately. Your first job is to recover sta
 
 1. If the previous project is complete and the user is starting new work, use `project-transition`
 2. Read the latest active input from `docs/requirements/`
-3. If the main input is a PDF, image set, wireframe, screenshot collection, or prototype, create `docs/visual-analysis/visual-source-analysis.md` before requirements authoring
+3. If the main input is a PDF, image set, wireframe, screenshot collection, prototype, or prototype code bundle, create `docs/visual-analysis/visual-source-analysis.md` before requirements authoring
 4. Confirm the technical approach before detailed planning starts
 5. Ask through planner skills if planning cannot safely continue
 6. Track planning progress with `docs/plans/planning-state.md`
@@ -26,17 +26,19 @@ Files under `docs/requirements/` are human-authored input.
 - Do not interpret them too aggressively
 - Do not treat extracted scope as if it were confirmed by the user
 
-### 2. Visual sources are analyzed before they become requirements
+### 2. Visual or prototype sources are analyzed before they become requirements
 
-PDFs, wireframes, prototypes, screenshots, and similar visual sources are not promoted directly into requirements.
+PDFs, wireframes, prototypes, screenshots, and prototype code bundles are not promoted directly into requirements.
 
 First convert them into `docs/visual-analysis/visual-source-analysis.md`.
 
 That analysis must:
 
 - inventory visible screens
+- extract route, interaction, and data signals when the source includes prototype code
 - record mandatory hidden, moved, linked, or relabeled elements
 - record explicit exclusions
+- separate product intent from demo-only implementation when possible
 - raise one concise question if visual scope is ambiguous
 
 ### 3. State documents are the source of truth
@@ -69,4 +71,16 @@ This harness currently includes:
 - planning, execution, verification, and closure skills
 - runtime hooks
 - memory
-- visual-source analysis before requirements promotion
+- source analysis before requirements promotion
+
+## Project Context
+
+Before modifying code or adding new features, read `research/index.md` first to understand the project structure.
+
+For details, refer to the sub-documents linked in index.md:
+- Code style/patterns → `research/conventions.md`
+- Architecture → `research/architecture.md`
+- Feature flows → `research/flow.md`
+- File roles → `research/file-map.md`
+- Previous work context → `research/changelog.md`
+- Next tasks → `research/roadmap.md`
