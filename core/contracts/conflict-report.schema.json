@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://personal-harness.local/contracts/conflict-report.schema.json",
+  "title": "Branch conflict report",
+  "type": "object",
+  "required": [
+    "baseBranch",
+    "featureBranch",
+    "files",
+    "verificationPlan"
+  ],
+  "properties": {
+    "baseBranch": {
+      "type": "string"
+    },
+    "featureBranch": {
+      "type": "string"
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "baseIntent",
+          "featureIntent",
+          "impact",
+          "resolutionOptions"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "baseIntent": {
+            "type": "string"
+          },
+          "featureIntent": {
+            "type": "string"
+          },
+          "impact": {
+            "type": "string"
+          },
+          "resolutionOptions": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "keep-base",
+                "keep-feature",
+                "combine",
+                "user-decision"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "verificationPlan": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

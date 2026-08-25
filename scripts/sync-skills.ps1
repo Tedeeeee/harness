@@ -14,7 +14,9 @@ if (-not (Test-Path -LiteralPath $SourceRoot)) {
   throw "Missing skill source directory: $SourceRoot"
 }
 
-$sources = Get-ChildItem -LiteralPath $SourceRoot -Directory
+$sources = Get-ChildItem -LiteralPath $SourceRoot -Directory | Where-Object {
+  Test-Path -LiteralPath (Join-Path $_.FullName 'SKILL.md')
+}
 foreach ($source in $sources) {
   $sourceFile = Join-Path $source.FullName 'SKILL.md'
   if (-not (Test-Path -LiteralPath $sourceFile)) {
@@ -46,4 +48,3 @@ if ($Check) {
 } else {
   Write-Output 'PASS: skill mirrors synchronized from skills-src'
 }
-

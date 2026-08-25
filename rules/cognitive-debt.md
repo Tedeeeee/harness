@@ -2,16 +2,10 @@
 
 Cognitive debt is created when automation produces changes that the responsible human cannot explain, operate, review, or safely change later.
 
-The harness must preserve the human mental model of the feature. At each meaningful phase, explain:
+The orchestrator protects understanding during the run by explaining current behavior, impact, alternatives, risks, and the next decision. This context lives in the active conversation and Orca runtime; the harness does not create a permanent transcript or phase-history directory.
 
-- what was understood;
-- how the system currently behaves;
-- why the proposed direction fits;
-- what changes and what does not;
-- which boundaries, contracts, data, permissions, and operations are affected;
-- what remains uncertain.
+When a feature changes, the target project must contain one current-state feature document. It describes how the feature works now, including flow, rules, contracts, affected areas, and verification. It is not an implementation diary.
 
-Do not create long documents for routine work. Record a decision when a new judgment, risky change, important assumption, or irreversible consequence needs to remain understandable. Code diff, tests, and operational evidence are the primary evidence; prose is a compact explanation of the evidence.
+Code, tests, operational evidence, and the current feature document are the durable evidence. Git preserves historical versions when historical comparison is needed.
 
-The invariant is: do not advance past a meaningful decision while the user lacks enough information to understand and approve it.
-
+The invariant is: do not advance past a meaningful decision while the user lacks enough information to understand and approve it, and do not complete a behavior change while the project document is stale.

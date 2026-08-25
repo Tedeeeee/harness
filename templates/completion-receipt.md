@@ -1,10 +1,8 @@
 # Completion Receipt
 
-## Changed
+## Implemented behavior
 
-## Why
-
-## User decisions
+## Current project feature document
 
 ## Verified
 
@@ -12,3 +10,4 @@
 
 ## Remaining risks
 
+## Merge and push status

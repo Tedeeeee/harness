@@ -1,32 +1,29 @@
 ---
 name: implementation
-description: Use when requirements and design have been confirmed and approved code changes, tests, migrations, or configuration must be produced.
+description: Use when approved requirements and design must become focused code, tests, migrations, configuration, and the project's current feature document.
 ---
 
 # Implementation
 
-## Purpose
-
-Produce the smallest reliable change inside the approved scope. Treat the attached project's rules, existing architecture, and tests as authoritative.
+Produce the smallest reliable change inside the approved scope. The attached project's rules, architecture, tests, and current feature documentation are authoritative.
 
 ## Before editing
 
-- read the approved phase report, decision card, and implementation-start record;
-- inspect the exact files, public contracts, tests, and patterns to change;
+- read the approved understanding and design;
+- inspect exact files, contracts, tests, and existing patterns;
 - state the intended file set and verification commands;
-- identify any mismatch between the approved design and the existing code.
+- identify mismatches between the approved design and current code.
 
 ## While editing
 
-- preserve ownership and dependency boundaries;
-- follow the project's language, framework, testing, and safety rules;
-- keep changes focused and avoid opportunistic refactors;
+- preserve ownership and dependency direction;
+- follow project language, framework, database, and testing rules;
 - add or update tests for changed behavior;
+- update docs/features/<feature-id>.md so it describes the behavior after this change;
 - report a material scope or design deviation before implementing it.
 
-Do not choose a new architecture during implementation. Do not silently expand scope because a nearby cleanup looks attractive. Do not claim a test passed unless it was actually run and its result is available.
+Do not choose a new architecture during implementation. Do not silently expand scope. Do not claim a test passed unless it was run and evidence is available.
 
 ## Handoff
 
-Return changed files, behavior changed, behavior intentionally unchanged, tests run, failures or skipped checks, and any remaining decision. Hand off to verification only when the approved implementation scope is complete enough to test.
-
+Return changed files, current behavior, intentionally unchanged behavior, the project feature document path, tests run, failures or skipped checks, and remaining decisions. Hand off only when the approved implementation is ready for independent review.
