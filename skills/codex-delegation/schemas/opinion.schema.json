@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "codex-opinion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["findings", "pick", "notes"],
+  "properties": {
+    "findings": {
+      "type": "array",
+      "description": "지적 목록. 지적이 없으면 빈 배열.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "summary", "evidence", "confidence"],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": ["breaks", "missing", "exception", "ambiguity", "rule_violation", "other"],
+            "description": "breaks=깨지는 것, missing=빠진 것, exception=놓친 예외 상황, ambiguity=지시서만으로는 짐작해야 하는 곳, rule_violation=프로젝트 규칙 위반, other=그 밖"
+          },
+          "summary": {
+            "type": "string",
+            "description": "한두 문장 요약"
+          },
+          "evidence": {
+            "type": "array",
+            "description": "코드 근거. 근거가 없으면 빈 배열.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "line", "note"],
+              "properties": {
+                "path": { "type": "string", "description": "프로젝트 폴더 기준 파일 경로" },
+                "line": { "type": ["integer", "null"], "description": "줄 번호. 모르면 null" },
+                "note": { "type": "string", "description": "그 위치가 왜 근거인지" }
+              }
+            }
+          },
+          "confidence": {
+            "type": "string",
+            "enum": ["high", "medium", "low"]
+          }
+        }
+      }
+    },
+    "pick": {
+      "type": "string",
+      "description": "선택지를 고른다면 고른 것과 근거. 고르지 않으면 빈 문자열."
+    },
+    "notes": {
+      "type": "string",
+      "description": "그 밖에 전할 말. 없으면 빈 문자열."
+    }
+  }
+}
